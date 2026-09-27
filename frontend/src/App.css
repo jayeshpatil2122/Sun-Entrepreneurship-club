@@ -2218,9 +2218,29 @@ body.is-locked {
   }
 
   .form-grid,
-  .crud-form,
-  .foot-grid-sebc {
+  .crud-form {
     grid-template-columns: 1fr;
+  }
+
+  .foot-grid-sebc {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px 20px;
+  }
+
+  .foot-brand-sebc {
+    grid-column: span 2;
+  }
+
+  .foot-col:nth-child(4) {
+    grid-column: span 2;
+    padding-top: 18px;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .foot-base-sebc {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
   }
 
   .reg-steps-grid {

@@ -66,6 +66,13 @@ const NAV = [
   ['events', 'Events'],
   ['team', 'Team'],
   ['arcade', 'Arcade'],
+];
+
+const FOOTER_NAV = [
+  ['home', 'Home'],
+  ['events', 'Events'],
+  ['team', 'Team'],
+  ['arcade', 'Arcade'],
   ['register', 'Register'],
 ];
 
@@ -93,11 +100,18 @@ const domains = [
 ];
 
 function route() {
-  const hash = (location.hash || '#/home').replace(/^#\//, '').split('?')[0];
+  const path = location.pathname.replace(/^\//, '').replace(/\/$/, '').split('/')[0];
+  const hash = (location.hash || '').replace(/^#\/?/, '').split('?')[0];
+  
+  if (path && path !== 'index.html') {
+    return path;
+  }
   return hash === '' ? 'home' : hash;
 }
 function go(page) {
-  location.hash = `/${page}`;
+  const target = page === 'home' ? '/home' : `/${page}`;
+  history.pushState(null, '', target);
+  window.dispatchEvent(new Event('popstate'));
   window.scrollTo(0, 0);
 }
 function photo(url) {
@@ -136,9 +150,8 @@ function Shell({ children, page, onLogout, showAdminLink, isDark, setIsDark }) {
       <div id="cursor" className="cur-dot" />
 
       {/* Navigation Header */}
-      {/* Navigation Header */}
       <header className={`app-nav ${isStuck ? 'stuck' : ''}`}>
-        <a className="app-brand" href="#/home" onClick={(e) => { e.preventDefault(); go('home'); }} data-cursor aria-label="SEBC Home">
+        <a className="app-brand" href="/home" onClick={(e) => { e.preventDefault(); go('home'); }} data-cursor aria-label="SEBC Home">
           <img
             src="/sandip-university-logo.png"
             alt="Sandip University"
@@ -155,7 +168,7 @@ function Shell({ children, page, onLogout, showAdminLink, isDark, setIsDark }) {
             <a
               key={id}
               className={page === id ? 'on' : ''}
-              href={`/#/${id}`}
+              href={`/${id}`}
               onClick={(e) => { e.preventDefault(); go(id); }}
               data-cursor
             >
@@ -165,7 +178,7 @@ function Shell({ children, page, onLogout, showAdminLink, isDark, setIsDark }) {
           {(showAdminLink || page === 'admin') && (
             <a
               className={page === 'admin' ? 'on' : ''}
-              href="#/admin"
+              href="/admin"
               onClick={(e) => { e.preventDefault(); go('admin'); }}
               data-cursor
             >
@@ -177,7 +190,7 @@ function Shell({ children, page, onLogout, showAdminLink, isDark, setIsDark }) {
         <div className="nav-actions">
           <a
             className="small-cta red desktop-only"
-            href="#/register"
+            href="/register"
             onClick={(e) => { e.preventDefault(); go('register'); }}
             data-cursor
           >
@@ -209,7 +222,7 @@ function Shell({ children, page, onLogout, showAdminLink, isDark, setIsDark }) {
                 <a
                   key={id}
                   className={`mobile-nav-item ${page === id ? 'on' : ''}`}
-                  href={`/#/${id}`}
+                  href={`/${id}`}
                   onClick={(e) => {
                     e.preventDefault();
                     setMenu(false);
@@ -220,10 +233,22 @@ function Shell({ children, page, onLogout, showAdminLink, isDark, setIsDark }) {
                   <i className="fa-solid fa-chevron-right" style={{ fontSize: '11px', opacity: 0.5 }} />
                 </a>
               ))}
+              <a
+                className={`mobile-nav-item ${page === 'register' ? 'on' : ''}`}
+                href="/register"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMenu(false);
+                  go('register');
+                }}
+              >
+                <span>Register</span>
+                <i className="fa-solid fa-chevron-right" style={{ fontSize: '11px', opacity: 0.5 }} />
+              </a>
               {(showAdminLink || page === 'admin') && (
                 <a
                   className={`mobile-nav-item ${page === 'admin' ? 'on' : ''}`}
-                  href="#/admin"
+                  href="/admin"
                   onClick={(e) => {
                     e.preventDefault();
                     setMenu(false);
@@ -238,7 +263,7 @@ function Shell({ children, page, onLogout, showAdminLink, isDark, setIsDark }) {
             <a
               className="solid-cta red"
               style={{ width: '100%', marginTop: '20px', textAlign: 'center', justifyContent: 'center' }}
-              href="#/register"
+              href="/register"
               onClick={(e) => {
                 e.preventDefault();
                 setMenu(false);
@@ -277,7 +302,7 @@ function Shell({ children, page, onLogout, showAdminLink, isDark, setIsDark }) {
           <div className="foot-col">
             <h4 style={{ fontWeight: 700, color: 'var(--bone)' }}>Explore</h4>
             <ul>
-              {NAV.map(([id, label]) => (
+              {FOOTER_NAV.map(([id, label]) => (
                 <li key={id}>
                   <button onClick={() => go(id)} style={{ fontWeight: 600 }} data-cursor>{label}</button>
                 </li>
@@ -1861,20 +1886,21 @@ export default function App() {
 
   // Routing
   useEffect(() => {
+    if (location.pathname === '/' && !location.hash) {
+      history.replaceState(null, '', '/home');
+    }
     const update = () => {
       const r = route();
       setPage(r);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
+    window.addEventListener('popstate', update);
     window.addEventListener('hashchange', update);
-    return () => window.removeEventListener('hashchange', update);
+    return () => {
+      window.removeEventListener('popstate', update);
+      window.removeEventListener('hashchange', update);
+    };
   }, []);
-
-  useEffect(() => {
-    if (page === 'home') {
-      location.replace('/landing-pages/kage.html');
-    }
-  }, [page]);
 
   // Scroll reveals
   useEffect(() => {
