@@ -2297,3 +2297,675 @@ body.is-locked {
     padding: 24px 18px;
   }
 }
+
+/* ========================================================= Registration Page Layout */
+.reg-layout-wrap {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 60px;
+  padding: 0 clamp(16px, 4vw, 48px);
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 32px;
+  align-items: start;
+  box-sizing: border-box;
+}
+
+.reg-sidebar {
+  position: sticky;
+  top: calc(var(--nav-h) + 24px);
+  z-index: 10;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.reg-sidebar-card {
+  background: rgba(10, 14, 18, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 24px 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.reg-progress-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.reg-progress-head .eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--bone-dim);
+  font-weight: 700;
+  margin: 0;
+}
+
+.reg-progress-counter {
+  font-family: 'Onest', system-ui, sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--gold, #d4af37);
+  line-height: 1;
+}
+
+.reg-progress-counter span {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.reg-progress-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(223, 231, 224, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.reg-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold, #d4af37), var(--vermilion, #e0231c));
+  border-radius: 999px;
+  transition: width 0.35s ease;
+}
+
+.reg-sidebar-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.reg-step-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  opacity: 0.55;
+  transition: opacity 0.3s;
+}
+
+.reg-step-row.completed {
+  opacity: 1;
+}
+
+.reg-step-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(223, 231, 224, 0.08);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--bone);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.reg-step-row.completed .reg-step-circle {
+  background: var(--gold, #d4af37);
+  border-color: var(--gold, #d4af37);
+  color: #0a0e12;
+}
+
+.reg-step-info strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--bone);
+  line-height: 1.3;
+}
+
+.reg-step-info p {
+  font-size: 11px;
+  color: var(--bone-dim);
+  margin: 3px 0 0 0;
+  line-height: 1.4;
+}
+
+.reg-trust-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.reg-trust-pill {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--bone-dim);
+  background: rgba(223, 231, 224, 0.06);
+  border: 1px solid rgba(223, 231, 224, 0.12);
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+.reg-form-col {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.application-form {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.form-card-section {
+  background: rgba(10, 14, 18, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: clamp(20px, 3vw, 32px);
+  margin-bottom: 24px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+.form-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.form-sec-num {
+  font-family: 'Onest', system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--vermilion, #e0231c);
+  background: rgba(224, 35, 28, 0.12);
+  border: 1px solid rgba(224, 35, 28, 0.25);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.form-card-header h3 {
+  font-family: 'Onest', system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--bone);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.form-card-header p {
+  font-size: 12px;
+  color: var(--bone-dim);
+  margin: 2px 0 0 0;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.full-field {
+  grid-column: 1 / -1;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.full-field label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+  margin-bottom: 8px;
+}
+
+.choice-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.choice-row button {
+  flex: 1 1 calc(33.333% - 10px);
+  min-width: 110px;
+  max-width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(223, 231, 224, 0.05);
+  border: 1px solid var(--line);
+  color: var(--bone);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.choice-row button.selected,
+.choice-row button:hover {
+  background: rgba(224, 35, 28, 0.15);
+  border-color: var(--vermilion, #e0231c);
+  color: #fff;
+}
+
+.file-dropzone {
+  border: 2px dashed rgba(223, 231, 224, 0.2);
+  border-radius: 12px;
+  padding: 24px 16px;
+  text-align: center;
+  background: rgba(223, 231, 224, 0.02);
+  cursor: pointer;
+  transition: all 0.25s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.file-dropzone:hover,
+.file-dropzone.dragover {
+  border-color: var(--gold, #d4af37);
+  background: rgba(212, 175, 55, 0.06);
+}
+
+.file-dropzone p {
+  margin: 0 0 6px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--bone);
+}
+
+.file-dropzone small {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.submit-action-row {
+  margin-top: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.submit-action-row button {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ========================================================= Mobile Overrides for Registration */
+@media (max-width: 960px) {
+  .route-main {
+    padding: 32px 16px 64px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .route-hero {
+    margin-bottom: 24px;
+    min-height: auto;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .route-hero h1 {
+    font-size: clamp(28px, 7.5vw, 42px);
+    line-height: 1.1;
+    margin-bottom: 12px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .route-hero p {
+    font-size: 13.5px;
+    line-height: 1.5;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+  }
+
+  .reg-layout-wrap {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 0;
+    margin-bottom: 40px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .reg-sidebar {
+    position: sticky;
+    top: var(--nav-h);
+    z-index: 35;
+    margin-bottom: 12px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .reg-sidebar-card {
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(10, 14, 18, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--line);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .reg-progress-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .reg-progress-head .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    margin: 0;
+  }
+
+  .reg-progress-counter {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--gold, #d4af37);
+  }
+
+  .reg-progress-counter span {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .reg-progress-track {
+    height: 4px;
+    margin-bottom: 8px;
+    width: 100%;
+    border-radius: 999px;
+  }
+
+  .reg-sidebar-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .reg-step-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .reg-step-circle {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 0;
+  }
+
+  .reg-step-info {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .reg-step-info strong {
+    font-size: 11.5px;
+    font-weight: 700;
+    line-height: 1.2;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .reg-step-info p {
+    font-size: 10px;
+    line-height: 1.25;
+    margin: 0;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    color: var(--bone-dim);
+  }
+
+  .reg-trust-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding-top: 8px;
+    border-top: 1px solid var(--line-soft);
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .reg-trust-pill {
+    font-size: 9px;
+    padding: 2px 7px;
+    letter-spacing: 0.04em;
+    border-radius: 4px;
+  }
+}
+
+@media (max-width: 768px) {
+  .reg-form-col {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .application-form {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .form-card-section {
+    padding: clamp(16px, 3.5vw, 22px) clamp(12px, 3vw, 18px);
+    margin-bottom: 16px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .form-card-header {
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+  }
+
+  .form-card-header div {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .form-card-header h3 {
+    font-size: 16px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .form-card-header p {
+    font-size: 11.5px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .form-sec-num {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .form-grid label,
+  .full-field label {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    font-size: 11px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .application-form input,
+  .application-form select,
+  .application-form textarea {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    font-size: 14px;
+    padding: 11px 12px;
+  }
+
+  .application-form textarea {
+    resize: vertical;
+    min-height: 90px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .choice-row {
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .choice-row button {
+    flex: 1 1 100%;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .deck-dropzone {
+    padding: 20px 12px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .deck-dropzone-content {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .deck-upload-text,
+  .deck-file-info {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    text-align: center;
+  }
+
+  .deck-upload-text strong,
+  .deck-file-info strong {
+    font-size: 12.5px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .deck-upload-text span,
+  .deck-file-info span {
+    font-size: 11px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .reg-submit-btn {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .form-submit-sub {
+    font-size: 11.5px;
+    padding: 0 4px;
+    line-height: 1.4;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+@media (max-width: 360px) {
+  .reg-sidebar-card {
+    padding: 10px 10px;
+  }
+
+  .reg-step-info strong {
+    font-size: 10.5px;
+  }
+
+  .reg-step-info p {
+    font-size: 9px;
+  }
+
+  .reg-trust-pill {
+    font-size: 8px;
+    padding: 2px 5px;
+  }
+}

@@ -97,6 +97,7 @@ const domains = [
   'EdTech & Social Impact',
   'Hardware, Robotics & IoT',
   'Consumer / E-Commerce',
+  'Other — not listed above',
 ];
 
 function route() {
@@ -290,47 +291,46 @@ function Shell({ children, page, onLogout, showAdminLink, isDark, setIsDark }) {
                 style={{ width: '34px', height: '34px', objectFit: 'contain', display: 'block', flexShrink: 0 }}
               />
               <div>
-                <strong style={{ fontFamily: 'Onest, sans-serif', fontWeight: 700, fontSize: '16px', color: 'var(--bone)', letterSpacing: '0.12em' }}>SEBC × SUN</strong>
-                <div style={{ fontSize: '10.5px', letterSpacing: '0.18em', color: 'var(--bone-dim)', fontWeight: 600 }}>Sandip E-Club · Nashik</div>
+                <strong style={{ fontFamily: 'Onest, sans-serif', fontWeight: 700, fontSize: '16px', color: 'var(--bone)', letterSpacing: '0.12em' }}>SUN Entrepreneurship Club</strong>
+                <div style={{ fontSize: '10.5px', letterSpacing: '0.18em', color: 'var(--bone-dim)', fontWeight: 600 }}>Sandip University, Nashik</div>
               </div>
             </div>
             <p style={{ fontWeight: 600, color: 'var(--bone-dim)', fontSize: '13px', lineHeight: '1.6' }}>
-              Sandip Entrepreneurship &amp; Business Club — turning raw student ideas into fundable ventures, on campus in Nashik.
+              A student-led entrepreneurship community focused on ideas, learning, collaboration and opportunities to explore venture building.
             </p>
           </div>
 
           <div className="foot-col">
-            <h4 style={{ fontWeight: 700, color: 'var(--bone)' }}>Explore</h4>
+            <h4 style={{ fontWeight: 700, color: 'var(--bone)' }}>Navigation</h4>
             <ul>
-              {FOOTER_NAV.map(([id, label]) => (
-                <li key={id}>
-                  <button onClick={() => go(id)} style={{ fontWeight: 600 }} data-cursor>{label}</button>
-                </li>
-              ))}
+              <li><button onClick={() => go('home')} style={{ fontWeight: 600 }} data-cursor>Home</button></li>
+              <li><button onClick={() => go('events')} style={{ fontWeight: 600 }} data-cursor>Events</button></li>
+              <li><button onClick={() => go('register')} style={{ fontWeight: 600 }} data-cursor>Register</button></li>
+              <li><button onClick={() => go('team')} style={{ fontWeight: 600 }} data-cursor>Team</button></li>
+              <li><button onClick={() => go('events')} style={{ fontWeight: 600 }} data-cursor>Contact / Social Links</button></li>
             </ul>
           </div>
 
           <div className="foot-col">
             <h4 style={{ fontWeight: 700, color: 'var(--bone)' }}>Program</h4>
             <ul>
+              <li><button onClick={() => go('events')} style={{ fontWeight: 600 }} data-cursor>SUN Launchpad 2026</button></li>
               <li><button onClick={() => go('events')} style={{ fontWeight: 600 }} data-cursor>Round 1 — Idea Pitch</button></li>
-              <li><button onClick={() => go('events')} style={{ fontWeight: 600 }} data-cursor>Round 2 — Business Pitch</button></li>
-              <li><button onClick={() => go('register')} style={{ fontWeight: 600 }} data-cursor>7-Day Idea Sprint</button></li>
-              <li><button onClick={() => go('register')} style={{ fontWeight: 600 }} data-cursor>Founder Pass</button></li>
+              <li><button onClick={() => go('events')} style={{ fontWeight: 600 }} data-cursor>Round 2 — Deeper Business Pitch</button></li>
+              <li><button onClick={() => go('events')} style={{ fontWeight: 600 }} data-cursor>6-Month Incubation Program</button></li>
             </ul>
           </div>
 
           <div className="foot-col">
             <h4 style={{ fontWeight: 700, color: 'var(--bone)' }}>Find Us</h4>
             <p style={{ color: 'var(--bone-dim)', fontSize: '13px', lineHeight: '1.7', textTransform: 'none', fontWeight: 600 }}>
-              SCIIE Hub, Block-B<br />
-              Sandip University,<br />
+              Sandip University Campus,<br />
               Nashik, Maharashtra
             </p>
             <div style={{ marginTop: '14px' }}>
-              <span style={{ fontSize: '10.5px', letterSpacing: '0.16em', color: 'var(--gold)', textTransform: 'uppercase', fontWeight: 700 }}>2026 cohort open</span>
-              <div style={{ fontSize: '11px', color: 'var(--bone-dim)', margin: '2px 0 6px', fontWeight: 600 }}>Limited pitch slots.</div>
-              <button onClick={() => go('register')} className="small-cta red" style={{ padding: '4px 14px', fontSize: '10.5px', fontWeight: 700 }} data-cursor>Apply Now</button>
+              <span style={{ fontSize: '10.5px', letterSpacing: '0.16em', color: 'var(--gold)', textTransform: 'uppercase', fontWeight: 700 }}>SUN Launchpad 2026</span>
+              <div style={{ fontSize: '11px', color: 'var(--bone-dim)', margin: '2px 0 6px', fontWeight: 600 }}>Free to participate.</div>
+              <button onClick={() => go('register')} className="small-cta red" style={{ padding: '4px 14px', fontSize: '10.5px', fontWeight: 700 }} data-cursor>Register Your Idea</button>
             </div>
           </div>
         </div>
@@ -417,49 +417,39 @@ const STATIC_EVENTS = [
     type: 'flagship',
     title: 'SUN Launchpad 2026',
     tagLeft: 'FLAGSHIP · DATES TO BE ANNOUNCED',
-    tagRight: 'SEBC × SCIIE',
-    subtitle: "SANDIP UNIVERSITY'S OFFICIAL STUDENT ACCELERATION DRIVE",
+    tagRight: 'SUN ENTREPRENEURSHIP CLUB',
+    subtitle: 'A PLATFORM FOR STUDENT IDEAS',
     status: 'UPCOMING',
-    description: 'Bring one raw idea. Leave with feedback, a mentor, a prototype plan — and a shot at non-dilutive funding. No registered company needed; an idea worth presenting is enough.',
-    when: 'To be announced soon',
-    venue: 'Sandip University Campus · SCIIE Hub, Nashik',
-    grants: 'Up to ₹1.5 Cr seed grants',
+    description: 'SUN Launchpad 2026 is the flagship pitch event of the SUN Entrepreneurship Club, created to discover promising student ideas, encourage entrepreneurial thinking and identify participants who may benefit from the next stage of support.',
+    when: 'To be announced',
+    venue: 'To be announced',
+    fee: 'Free, subject to official confirmation',
+    format: 'Two-round pitch and evaluation program',
+    participants: 'Students / student teams',
+    nextStage: 'Selected/promising teams may be considered for the 6-month incubation program',
     stage1: {
-      num: 'Stage 01',
-      title: 'Idea & confidence pitch',
-      desc: 'A 60-second pitch: problem, user, solution, vision. Judged on clarity and courage.',
+      num: 'Round 01',
+      title: 'Idea Pitch',
+      desc: 'Open to students with an idea. Present the problem, who it affects, your proposed solution and why the idea matters. Designed for participation, confidence and clear communication.',
     },
     stage2: {
-      num: 'Stage 02',
-      title: 'Business & commercialization',
-      desc: 'Full business pitch before VCs: market, unit economics, moat and roadmap.',
+      num: 'Round 02',
+      title: 'Deeper Business Pitch',
+      desc: 'Shortlisted/promising participants go deeper into the idea: users/market, solution feasibility, business model, differentiation and execution plan.',
     },
   },
   {
     _id: 'ev-reg-drive',
     type: 'subcard',
-    category: 'REGISTRATION & MATCHMAKING',
+    category: 'STUDENT PITCH PROGRAM',
     overtitle: 'SUN LAUNCHPAD 2026',
-    title: 'Official Registration Drive',
+    title: 'SUN Launchpad 2026',
     status: 'PRESENT',
-    description: 'Submit your raw idea, get pitch-structure guidance, or find co-founders across departments.',
-    when: 'Active now · Ongoing',
-    venue: 'SCIIE Hub, Block-B / Online',
-    ctaText: 'Register now →',
-    ctaAction: 'register',
-  },
-  {
-    _id: 'ev-pitch-competition',
-    type: 'subcard',
-    category: 'PITCH COMPETITION',
-    overtitle: 'SUN LAUNCHPAD 2026',
-    title: 'Main Pitch Competition',
-    status: 'UPCOMING',
-    description: 'Round 1 confidence pitches plus Round 2 investor evaluations for seed grants.',
+    description: 'Two-round student pitch program. Bring your idea, present it, receive feedback and explore the next step. Dates and detailed event information will be announced officially.',
     when: 'Dates to be announced',
-    venue: 'Main Auditorium, Sandip University',
-    ctaText: 'Get event alert',
-    ctaAction: 'alert',
+    venue: 'To be announced',
+    ctaText: 'Register your idea →',
+    ctaAction: 'register',
   },
 ];
 
@@ -506,9 +496,9 @@ export function Events({ openRsvpModal, showAdminLink, isDark, setIsDark }) {
   return (
     <Shell page="events" showAdminLink={showAdminLink} isDark={isDark} setIsDark={setIsDark}>
       <section className="route-hero">
-        <p className="eyebrow"><span className="dot" /> EVENT PIPELINE</p>
-        <h1>Where founders<br /><span style={{ color: 'var(--vermilion)' }}>get discovered.</span></h1>
-        <p>Live drives and upcoming pitch stages from the Entrepreneurship &amp; Business Club.</p>
+        <p className="eyebrow"><span className="dot" /> SUN LAUNCHPAD 2026</p>
+        <h1>A platform for<br /><span style={{ color: 'var(--vermilion)' }}>student ideas.</span></h1>
+        <p>SUN Launchpad 2026 is the flagship pitch event of the SUN Entrepreneurship Club, created to discover promising student ideas, encourage entrepreneurial thinking and identify participants who may benefit from the next stage of support.</p>
       </section>
 
       <div className="event-filter-bar">
@@ -547,7 +537,7 @@ export function Events({ openRsvpModal, showAdminLink, isDark, setIsDark }) {
           <h3>No events found</h3>
           <p>
             {filter === 'COMPLETED'
-              ? 'No past events yet — check back after our first demo day.'
+              ? 'No past events yet — check back after our first pitch rounds.'
               : filter === 'PRESENT'
                 ? 'No live events right now — check back soon.'
                 : 'No events match your search criteria.'}
@@ -556,11 +546,11 @@ export function Events({ openRsvpModal, showAdminLink, isDark, setIsDark }) {
       ) : (
         <div className="event-list-wrap">
           {flagshipEvents.map((event) => {
-            const dateStr = event.when || (event.date ? new Date(event.date).toLocaleDateString('en-IN', { dateStyle: 'long' }) : event.time || 'To be announced soon');
-            const venueStr = event.venue || 'Sandip University Campus · SCIIE Hub, Nashik';
-            const grantsStr = event.grants || 'Up to ₹1.5 Cr seed grants';
+            const dateStr = event.when || (event.date ? new Date(event.date).toLocaleDateString('en-IN', { dateStyle: 'long' }) : event.time || 'To be announced');
+            const venueStr = event.venue || 'To be announced';
+            const feeStr = event.fee || 'Free to participate';
             const tagLeft = event.tagLeft || 'FLAGSHIP · DATES TO BE ANNOUNCED';
-            const tagRight = event.tagRight || 'SEBC × SCIIE';
+            const tagRight = event.tagRight || 'SUN ENTREPRENEURSHIP CLUB';
 
             return (
               <article className="event-flagship-card" key={event._id || event.title}>
@@ -578,21 +568,21 @@ export function Events({ openRsvpModal, showAdminLink, isDark, setIsDark }) {
                 <div className="event-meta-grid-3">
                   <div className="event-meta-box">
                     <span className="meta-box-label">
-                      <i className="fa-solid fa-location-dot" /> VENUE
+                      <i className="fa-solid fa-list-check" /> FORMAT
                     </span>
-                    <span className="meta-box-val">{venueStr}</span>
+                    <span className="meta-box-val">{event.format || 'Two-round pitch and evaluation program'}</span>
                   </div>
                   <div className="event-meta-box">
                     <span className="meta-box-label">
-                      <i className="fa-regular fa-clock" /> WHEN
+                      <i className="fa-regular fa-clock" /> DATE &amp; VENUE
                     </span>
-                    <span className="meta-box-val">{dateStr}</span>
+                    <span className="meta-box-val">{dateStr} · {venueStr}</span>
                   </div>
                   <div className="event-meta-box">
                     <span className="meta-box-label">
-                      <i className="fa-solid fa-sack-dollar" /> GRANTS
+                      <i className="fa-solid fa-ticket" /> PARTICIPATION
                     </span>
-                    <span className="meta-box-val highlight">{grantsStr}</span>
+                    <span className="meta-box-val highlight">{feeStr}</span>
                   </div>
                 </div>
 
@@ -600,14 +590,14 @@ export function Events({ openRsvpModal, showAdminLink, isDark, setIsDark }) {
                   <div className="event-stages-grid-2">
                     {event.stage1 && (
                       <div className="event-stage-card">
-                        <span className="stage-card-tag">{event.stage1.num || 'Stage 01'}</span>
+                        <span className="stage-card-tag">{event.stage1.num || 'Round 01'}</span>
                         <h4>{event.stage1.title}</h4>
                         <p>{event.stage1.desc}</p>
                       </div>
                     )}
                     {event.stage2 && (
                       <div className="event-stage-card">
-                        <span className="stage-card-tag">{event.stage2.num || 'Stage 02'}</span>
+                        <span className="stage-card-tag">{event.stage2.num || 'Round 02'}</span>
                         <h4>{event.stage2.title}</h4>
                         <p>{event.stage2.desc}</p>
                       </div>
@@ -622,10 +612,10 @@ export function Events({ openRsvpModal, showAdminLink, isDark, setIsDark }) {
                     onClick={() => openRsvpModal(event.title, dateStr, venueStr, event._id)}
                     data-cursor
                   >
-                    <i className="fa-solid fa-bell" style={{ marginRight: '6px' }} /> Notify me at launch
+                    <i className="fa-solid fa-bell" style={{ marginRight: '6px' }} /> Notify me of updates
                   </button>
                   <a className="solid-cta red" href="#/register" onClick={() => go('register')} data-cursor>
-                    Register now →
+                    Register your idea →
                   </a>
                 </div>
               </article>
@@ -848,6 +838,7 @@ export function Register({ onApplicationReceived, showAdminLink, isDark, setIsDa
   const [data, setData] = useState({
     fullName: '',
     prn: '',
+    university: 'Sandip University, Nashik',
     school: schools[0],
     academicYear: '2nd Year',
     gender: 'Male',
@@ -855,11 +846,16 @@ export function Register({ onApplicationReceived, showAdminLink, isDark, setIsDa
     phone: '',
     ideaTitle: '',
     domain: domains[0],
+    targetUsers: '',
+    stage: 'Idea',
     problemStatement: '',
     solutionOverview: '',
-    teamType: 'Solo Founder',
+    teamType: 'Solo',
+    teamMembers: '',
   });
   const [otherSchool, setOtherSchool] = useState('');
+  const [otherDomain, setOtherDomain] = useState('');
+  const [otherStage, setOtherStage] = useState('');
   const [deck, setDeck] = useState(null);
   const [deckDrag, setDeckDrag] = useState(false);
   const [message, setMessage] = useState('');
@@ -869,7 +865,7 @@ export function Register({ onApplicationReceived, showAdminLink, isDark, setIsDa
   const change = (event) => setData({ ...data, [event.target.name]: event.target.value });
 
   // Core required fields for 0/7 progress calculation
-  const coreFields = ['fullName', 'prn', 'email', 'phone', 'ideaTitle', 'problemStatement', 'solutionOverview'];
+  const coreFields = ['fullName', 'email', 'phone', 'ideaTitle', 'problemStatement', 'solutionOverview', 'targetUsers'];
   const progressCount = coreFields.filter((f) => Boolean(data[f] && data[f].trim())).length;
 
   const handleFileDrop = (e) => {
@@ -912,12 +908,14 @@ export function Register({ onApplicationReceived, showAdminLink, isDark, setIsDa
       await api.registration({
         ...data,
         school: data.school.startsWith('Other') ? otherSchool : data.school,
+        domain: data.domain.startsWith('Other') ? otherDomain : data.domain,
+        stage: data.stage === 'Other' ? otherStage : data.stage,
         pitchDeckUrl,
       });
       if (onApplicationReceived) {
         onApplicationReceived({ name: data.fullName, title: data.ideaTitle });
       } else {
-        setMessage(`Thanks, ${data.fullName.split(' ')[0] || 'founder'}. Your application is pending admin review.`);
+        setMessage(`Thanks, ${data.fullName.split(' ')[0] || 'founder'}. Your idea has been registered. You will receive updates about Round 1 schedule and details.`);
       }
     } catch (e) {
       setError(e.message);
@@ -929,9 +927,9 @@ export function Register({ onApplicationReceived, showAdminLink, isDark, setIsDa
   return (
     <Shell page="register" showAdminLink={showAdminLink} isDark={isDark} setIsDark={setIsDark}>
       <section className="route-hero">
-        <p className="eyebrow"><span className="dot" /> 2026 COHORT · 5-MINUTE FORM</p>
+        <p className="eyebrow"><span className="dot" /> SUN LAUNCHPAD 2026 · REGISTRATION</p>
         <h1>Register your idea.</h1>
-        <p>Get your verified Founder Pass instantly. No company, no deck, no team required.</p>
+        <p>Tell us who you are, what problem you want to solve and how you think your solution could help. Your idea does not need to be a finished product.</p>
       </section>
 
       <div className="reg-layout-wrap">
@@ -956,32 +954,32 @@ export function Register({ onApplicationReceived, showAdminLink, isDark, setIsDa
               <div className={`reg-step-row ${progressCount >= 1 ? 'completed' : ''}`}>
                 <div className="reg-step-circle">1</div>
                 <div className="reg-step-info">
-                  <strong>Submit in 5 minutes</strong>
-                  <p>Seven short fields. Rough drafts welcome.</p>
+                  <strong>Submit your idea</strong>
+                  <p>Tell us about yourself and your problem &amp; solution.</p>
                 </div>
               </div>
 
               <div className={`reg-step-row ${progressCount >= 5 ? 'completed' : ''}`}>
                 <div className="reg-step-circle">2</div>
                 <div className="reg-step-info">
-                  <strong>Get your Founder Pass</strong>
-                  <p>Instant verification + reference ID.</p>
+                  <strong>Receive feedback</strong>
+                  <p>Pitch in Round 1 and learn from evaluator questions.</p>
                 </div>
               </div>
 
               <div className={`reg-step-row ${progressCount === 7 ? 'completed' : ''}`}>
                 <div className="reg-step-circle">3</div>
                 <div className="reg-step-info">
-                  <strong>Walk into Round 1 ready</strong>
-                  <p>Pitch slot, mentor desk and sprint access.</p>
+                  <strong>Take the next step</strong>
+                  <p>Selected teams explore the 6-month incubation opportunity.</p>
                 </div>
               </div>
             </div>
 
             <div className="reg-trust-pills">
-              <span className="reg-trust-pill">100% equity kept</span>
-              <span className="reg-trust-pill">No fees</span>
-              <span className="reg-trust-pill">All schools welcome</span>
+              <span className="reg-trust-pill">Free to participate</span>
+              <span className="reg-trust-pill">Early ideas welcome</span>
+              <span className="reg-trust-pill">Solo or teams</span>
             </div>
           </div>
         </aside>
@@ -995,7 +993,7 @@ export function Register({ onApplicationReceived, showAdminLink, isDark, setIsDa
                 <span className="form-sec-num">01</span>
                 <div>
                   <h3>Who you are</h3>
-                  <p>Verification + pitch updates reach you here.</p>
+                  <p>Your details so we can reach you with event updates.</p>
                 </div>
               </div>
               <div className="form-grid">
@@ -1008,46 +1006,42 @@ export function Register({ onApplicationReceived, showAdminLink, isDark, setIsDa
                   placeholder="e.g. Aarav Sharma"
                 />
                 <Input
-                  label="Sandip PRN / Roll no. *"
+                  label="University / College"
+                  name="university"
+                  value={data.university}
+                  onChange={change}
+                  placeholder="e.g. Sandip University, Nashik"
+                />
+                <Input
+                  label="PRN / Roll no."
                   name="prn"
                   value={data.prn}
                   onChange={change}
-                  required
                   placeholder="e.g. 220101234001"
                 />
                 <Select
-                  label="School / Institute"
+                  label="School / Department *"
                   name="school"
                   value={data.school}
                   onChange={change}
                   options={schools}
                 />
-                {data.school.startsWith('Other') ? (
+                {data.school.startsWith('Other') && (
                   <Input
-                    label="Your school / institute *"
+                    label="Your school / department *"
                     value={otherSchool}
                     onChange={(e) => setOtherSchool(e.target.value)}
                     required
-                    placeholder="Enter institute name"
-                  />
-                ) : (
-                  <Select
-                    label="Academic year"
-                    name="academicYear"
-                    value={data.academicYear}
-                    onChange={change}
-                    options={['1st Year', '2nd Year', '3rd Year', '4th Year', 'Postgraduate / M.Tech / MBA', 'Alumni / Researcher']}
+                    placeholder="Enter school or department name"
                   />
                 )}
-                {data.school.startsWith('Other') && (
-                  <Select
-                    label="Academic year"
-                    name="academicYear"
-                    value={data.academicYear}
-                    onChange={change}
-                    options={['1st Year', '2nd Year', '3rd Year', '4th Year', 'Postgraduate / M.Tech / MBA', 'Alumni / Researcher']}
-                  />
-                )}
+                <Select
+                  label="Year of study"
+                  name="academicYear"
+                  value={data.academicYear}
+                  onChange={change}
+                  options={['1st Year', '2nd Year', '3rd Year', '4th Year', 'Postgraduate / M.Tech / MBA', 'Alumni / Researcher']}
+                />
                 <Select
                   label="Gender"
                   name="gender"
@@ -1056,7 +1050,7 @@ export function Register({ onApplicationReceived, showAdminLink, isDark, setIsDa
                   options={['Male', 'Female', 'Other / Prefer not to say']}
                 />
                 <Input
-                  label="Sandip email *"
+                  label="Email *"
                   name="email"
                   type="email"
                   value={data.email}
@@ -1065,7 +1059,7 @@ export function Register({ onApplicationReceived, showAdminLink, isDark, setIsDa
                   placeholder="name@sandipuniversity.edu.in"
                 />
                 <Input
-                  label="WhatsApp number *"
+                  label="WhatsApp / Contact number *"
                   name="phone"
                   value={data.phone}
                   onChange={change}
@@ -1081,12 +1075,12 @@ export function Register({ onApplicationReceived, showAdminLink, isDark, setIsDa
                 <span className="form-sec-num">02</span>
                 <div>
                   <h3>Your idea</h3>
-                  <p>Clarity beats polish. Rough is fine.</p>
+                  <p>Tell us about the problem and your proposed solution.</p>
                 </div>
               </div>
               <div className="form-grid">
                 <Input
-                  label="Startup / Idea title *"
+                  label="Idea / Venture title *"
                   name="ideaTitle"
                   value={data.ideaTitle}
                   onChange={change}
@@ -1097,13 +1091,27 @@ export function Register({ onApplicationReceived, showAdminLink, isDark, setIsDa
                   label="Sector / Domain"
                   name="domain"
                   value={data.domain}
-                  onChange={change}
+                  onChange={(e) => {
+                    change(e);
+                    if (!e.target.value.startsWith('Other')) {
+                      setOtherDomain('');
+                    }
+                  }}
                   options={domains}
                 />
+                {data.domain.startsWith('Other') && (
+                  <Input
+                    label="Your sector / domain *"
+                    value={otherDomain}
+                    onChange={(e) => setOtherDomain(e.target.value)}
+                    required
+                    placeholder="Enter your sector / domain"
+                  />
+                )}
                 <div className="full-field">
-                  <label>Team setup</label>
+                  <label>Participation type</label>
                   <div className="choice-row">
-                    {['Solo Founder', '2 Co-Founders', '3-4 Team Members'].map((value) => (
+                    {['Solo', 'Team'].map((value) => (
                       <button
                         type="button"
                         className={data.teamType === value ? 'selected' : ''}
@@ -1116,26 +1124,72 @@ export function Register({ onApplicationReceived, showAdminLink, isDark, setIsDa
                     ))}
                   </div>
                 </div>
+
+                {data.teamType === 'Team' && (
+                  <div className="full-field">
+                    <Text
+                      label="Team member details"
+                      name="teamMembers"
+                      value={data.teamMembers}
+                      onChange={change}
+                      placeholder="Please list other team member names, emails and departments."
+                    />
+                  </div>
+                )}
+
+                <div className="full-field">
+                  <Select
+                    label="Current stage"
+                    name="stage"
+                    value={data.stage}
+                    onChange={(e) => {
+                      change(e);
+                      if (e.target.value !== 'Other') setOtherStage('');
+                    }}
+                    options={['Idea', 'Prototype', 'Early users', 'Other']}
+                  />
+                  {data.stage === 'Other' && (
+                    <Input
+                      label="Specify stage *"
+                      value={otherStage}
+                      onChange={(e) => setOtherStage(e.target.value)}
+                      required
+                      placeholder="Describe your current stage"
+                    />
+                  )}
+                </div>
+
+                <div className="full-field">
+                  <Input
+                    label="Who is affected / Target users *"
+                    name="targetUsers"
+                    value={data.targetUsers}
+                    onChange={change}
+                    required
+                    placeholder="Who experiences this problem daily? Who would use this?"
+                  />
+                </div>
+
                 <Text
                   label="Problem statement *"
                   name="problemStatement"
                   value={data.problemStatement}
                   onChange={change}
                   required
-                  placeholder="What exact frustration or problem did you observe? Who experiences this pain daily?"
+                  placeholder="What exact problem or unmet need are you trying to solve?"
                 />
                 <Text
-                  label="Proposed solution & vision *"
+                  label="Proposed solution *"
                   name="solutionOverview"
                   value={data.solutionOverview}
                   onChange={change}
                   required
-                  placeholder="How does your solution solve this? What does the product look like at scale?"
+                  placeholder="What is your proposed solution and how does it help the target users?"
                 />
 
                 {/* Optional Pitch Deck Dropzone */}
                 <div className="full-field">
-                  <label>Pitch deck / proposal (optional)</label>
+                  <label>Optional pitch deck / supporting document</label>
                   <div
                     className={`deck-dropzone ${deckDrag ? 'dragover' : ''} ${deck ? 'has-file' : ''}`}
                     onDragOver={(e) => { e.preventDefault(); setDeckDrag(true); }}
@@ -1168,8 +1222,8 @@ export function Register({ onApplicationReceived, showAdminLink, isDark, setIsDa
                         </div>
                       ) : (
                         <div className="deck-upload-text">
-                          <strong>Drop your deck here, or click to browse</strong>
-                          <span>PDF / PPTX · up to 15MB</span>
+                          <strong>Drop your deck or document here, or click to browse</strong>
+                          <span>PDF / PPTX / DOCX · up to 15MB</span>
                         </div>
                       )}
                     </div>
@@ -1181,16 +1235,19 @@ export function Register({ onApplicationReceived, showAdminLink, isDark, setIsDa
             <Notice message={error || message} error={!!error} />
 
             <div className="form-submit-footer">
+              <p className="reg-acknowledgement" style={{ fontSize: '12px', color: 'var(--bone-dim)', lineHeight: '1.6', marginBottom: '14px', textAlign: 'center' }}>
+                Submitting an idea does not guarantee progression to Round 2 or incubation. Selection is subject to event evaluation and applicable conditions.
+              </p>
               <button
                 type="submit"
                 className="reg-submit-btn"
                 disabled={busy}
                 data-cursor
               >
-                {busy ? 'Generating Founder Pass...' : 'Generate Founder Pass →'}
+                {busy ? 'Registering Your Idea...' : 'Register Your Idea →'}
               </button>
               <p className="form-submit-sub">
-                Instant verification + automated Founder Pass generation. Rough drafts welcome. Zero equity taken.
+                Participation is planned as free. An early-stage idea is welcome. No registered company or prototype required.
               </p>
             </div>
           </form>
@@ -1242,7 +1299,7 @@ const STATIC_TEAM_MEMBERS = [
     initials: 'JA',
     name: 'Jahan Ara Khan',
     role: 'Treasurer',
-    description: 'Guards the money — budgets, event spends and grant tracking.',
+    description: 'Manages club budgets, event spends and finance operations.',
     year: '3rd Year',
     department: 'School of Management Studies',
     category: 'TREASURERS',
@@ -1421,7 +1478,7 @@ const STATIC_TEAM_MEMBERS = [
 ];
 
 const TEAM_CATEGORIES = [
-  { id: 'ALL', label: 'ALL · 24' },
+  { id: 'ALL', label: 'ALL' },
   { id: 'PRESIDENTS', label: 'PRESIDENTS' },
   { id: 'SECRETARIES', label: 'SECRETARIES' },
   { id: 'TREASURERS', label: 'TREASURERS' },
@@ -1462,12 +1519,12 @@ export function Team({ showAdminLink, isDark, setIsDark }) {
   return (
     <Shell page="team" showAdminLink={showAdminLink} isDark={isDark} setIsDark={setIsDark}>
       <section className="route-hero">
-        <p className="eyebrow"><span className="dot" /> THE CREW</p>
+        <p className="eyebrow"><span className="dot" /> SUN ENTREPRENEURSHIP CLUB</p>
         <h1>
-          Students running<br />
-          <span style={{ color: 'var(--vermilion)' }}>a startup engine.</span>
+          Meet the SUN<br />
+          <span style={{ color: 'var(--vermilion)' }}>Entrepreneurship Club team.</span>
         </h1>
-        <p>Presidents to video editors — 24 builders across 8 teams keep the Launchpad flying.</p>
+        <p>A student-led team working to create opportunities for entrepreneurship, innovation and practical learning on campus.</p>
       </section>
 
       <div className="filter-row">
@@ -2110,7 +2167,7 @@ export default function App() {
             Thanks{first ? `, ${first}` : ''} — we got it.
           </p>
           <p style={{ fontSize: '13px', color: 'var(--bone-dim)', lineHeight: '1.6', margin: 0 }}>
-            “{title}” is now pending admin review. Your verified Founder Pass arrives by email once approved.
+            “{title}” has been registered. You will receive updates about Round 1 schedule and details via email and WhatsApp.
           </p>
           <button className="solid-cta gold" onClick={closeModal} style={{ width: '100%' }} data-cursor>
             Done

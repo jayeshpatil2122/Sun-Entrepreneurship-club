@@ -15,8 +15,20 @@
     integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
-    .mobile-only { display: none !important; }
-    @media (max-width: 900px) { .mobile-only { display: inline-flex !important; } .desktop-only { display: none !important; } }
+    .mobile-only {
+      display: none !important;
+    }
+
+    @media (max-width: 900px) {
+      .mobile-only {
+        display: inline-flex !important;
+      }
+
+      .desktop-only {
+        display: none !important;
+      }
+    }
+
     /* ============================================================= tokens */
     :root {
       --ink: #05070a;
@@ -268,7 +280,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: opacity .8s var(--ease), visibility .8s;
+      transition: opacity .5s cubic-bezier(0.2, 0.8, 0.2, 1), visibility .5s;
     }
 
     #pre.done {
@@ -347,6 +359,8 @@
       background: linear-gradient(90deg, #e0231c, #ff5a3c, #c9a24a);
       box-shadow: 0 0 14px rgba(224, 35, 28, 0.9);
       border-radius: 3px;
+      transition: right 0.08s linear;
+      will-change: right;
     }
 
     .pre-meta {
@@ -715,50 +729,198 @@
     }
 
     .hero-top {
-      padding-top: calc(var(--nav-h) + clamp(16px, 3vh, 36px));
-      max-width: min(840px, 92vw);
+      padding-top: calc(var(--nav-h) + clamp(16px, 3vh, 32px));
+      max-width: min(640px, 92vw);
       position: relative;
       z-index: 2;
     }
 
-    .hero-top .eyebrow {
-      display: flex;
+    .hero-pill-badge {
+      display: inline-flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 16px;
-      font-size: 11.5px;
-      font-weight: 600;
-      letter-spacing: .2em;
-      color: var(--bone);
-      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+      gap: 12px;
+      padding: 7px 18px;
+      background: rgba(14, 20, 18, 0.72);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      border-radius: 999px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), inset 0 0 12px rgba(212, 175, 55, 0.05);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      margin-bottom: 24px;
+      max-width: 100%;
     }
 
-    .hero-top .eyebrow .dot {
-      width: 6px;
-      height: 6px;
+    .hero-pill-badge .pill-dot {
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background: var(--light-red, #ff5a4e);
-      box-shadow: 0 0 12px var(--light-red, #ff5a4e);
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+      flex-shrink: 0;
     }
 
-    .hero h1 {
-      margin-bottom: 14px;
+    .hero-pill-badge .pill-text {
+      font-family: 'Onest', system-ui, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #e5ba53;
+      white-space: nowrap;
+    }
+
+    .hero-pill-badge .pill-sep {
+      color: rgba(212, 175, 55, 0.45);
+      font-size: 11px;
+      font-weight: 300;
+    }
+
+    .hero-eyebrow-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 22px;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Onest', system-ui, sans-serif;
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--bone, #dfe7e0);
+      opacity: 0.92;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+      margin-bottom: 8px;
+    }
+
+    .hero-eyebrow-rule {
+      width: 38px;
+      height: 2px;
+      background: var(--gold, #d4af37);
+      border-radius: 2px;
+      box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+    }
+
+    .h-hero {
+      font-family: 'Onest', system-ui, sans-serif;
+      font-size: clamp(28px, 4.6vw, 52px);
+      font-weight: 800;
+      line-height: 1.06;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--bone, #dfe7e0);
+      margin: 0 0 14px 0;
+      text-shadow: 0 3px 20px rgba(0, 0, 0, 0.95);
+    }
+
+    .h-hero .red-accent {
+      color: var(--light-red, #ff5a4e);
+      text-shadow: 0 0 24px rgba(255, 90, 78, 0.45);
+    }
+
+    .hero-divider-bar {
+      width: 38px;
+      height: 2px;
+      background: var(--gold, #d4af37);
+      box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+      margin: 16px 0 14px 0;
+      border-radius: 2px;
     }
 
     .hero-sub {
-      max-width: min(820px, 92vw);
-      margin-top: 12px;
+      max-width: min(560px, 92vw);
+      margin: 0 0 20px 0;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 10px 16px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+      box-sizing: border-box;
     }
 
     .body-hero {
-      font-size: clamp(14px, 1.05vw, 16px);
+      font-size: clamp(13px, 1.0vw, 15px);
       line-height: 1.55;
-      color: var(--bone, #dfe7e0);
+      color: rgba(240, 245, 242, 0.95);
       font-weight: 400;
-      background: transparent;
-      border: none;
-      padding: 0;
-      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.95), 0 1px 4px rgba(0, 0, 0, 0.9), 0 0 24px rgba(0, 0, 0, 0.85);
+      margin: 0;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+    }
+
+    .hero-cta-action {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-join-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--gold, #d4af37);
+      color: #0a0e12;
+      font-family: 'Onest', system-ui, sans-serif;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 12px 24px;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 4px 18px rgba(212, 175, 55, 0.35);
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .hero-join-cta-btn:hover {
+      background: #e0bb45;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(212, 175, 55, 0.5);
+      color: #000;
+    }
+
+    .hero-join-cta-btn .btn-arrow {
+      font-style: normal;
+      font-size: 14px;
+      line-height: 1;
+      transition: transform 0.25s ease;
+    }
+
+    .hero-join-cta-btn:hover .btn-arrow {
+      transform: translateX(4px);
+    }
+
+    .hero-secondary-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(10, 14, 18, 0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: var(--bone, #dfe7e0);
+      border: 1px solid var(--line, rgba(223, 231, 224, 0.15));
+      font-family: 'Onest', system-ui, sans-serif;
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 12px 24px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .hero-secondary-cta-btn:hover {
+      background: rgba(223, 231, 224, 0.1);
+      border-color: rgba(223, 231, 224, 0.35);
+      color: #fff;
+      transform: translateY(-2px);
     }
 
     .hero-spacer {
@@ -3472,7 +3634,7 @@
 
     .toolkit-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
       gap: clamp(16px, 2vw, 24px);
       margin-top: clamp(36px, 5vh, 52px);
       width: 100%;
@@ -3724,27 +3886,136 @@
         --nav-h: 68px;
       }
 
+      .hero-top {
+        max-width: 100% !important;
+        padding-top: calc(var(--nav-h) + clamp(8px, 2vh, 18px)) !important;
+      }
+
+      .hero-pill-badge {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: clamp(4px, 1.2vw, 8px) !important;
+        padding: 5px clamp(8px, 1.8vw, 14px) !important;
+        margin-bottom: clamp(16px, 2.6vh, 22px) !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        width: fit-content !important;
+      }
+
+      .hero-pill-badge .pill-dot {
+        width: 5px !important;
+        height: 5px !important;
+        flex-shrink: 0 !important;
+      }
+
+      .hero-pill-badge .pill-text {
+        font-size: clamp(7.6px, 2.05vw, 9.6px) !important;
+        letter-spacing: clamp(0.04em, 0.28vw, 0.11em) !important;
+        white-space: nowrap !important;
+        line-height: 1 !important;
+      }
+
+      .hero-pill-badge .pill-sep {
+        font-size: clamp(7.6px, 2.05vw, 9.6px) !important;
+        margin: 0 !important;
+        opacity: 0.6 !important;
+        flex-shrink: 0 !important;
+      }
+
+      @media (max-width: 375px) {
+        .hero-pill-badge {
+          gap: 4px !important;
+          padding: 4px 8px !important;
+        }
+
+        .hero-pill-badge .pill-text {
+          font-size: 7.8px !important;
+          letter-spacing: 0.05em !important;
+        }
+      }
+
+      @media (max-width: 330px) {
+        .hero-pill-badge {
+          gap: 3px !important;
+          padding: 3px 6px !important;
+        }
+
+        .hero-pill-badge .pill-text {
+          font-size: 7.0px !important;
+          letter-spacing: 0.03em !important;
+        }
+      }
+
+      .hero-eyebrow-wrap {
+        margin-bottom: clamp(16px, 2.4vh, 22px) !important;
+      }
+
+      .hero-eyebrow {
+        font-size: clamp(12px, 3.3vw, 13.5px) !important;
+        letter-spacing: 0.22em !important;
+        margin-bottom: 7px !important;
+      }
+
+      .hero-eyebrow-rule {
+        width: 36px !important;
+        height: 2px !important;
+      }
+
       .h-hero {
-        font-size: clamp(22px, 5.8vw, 32px) !important;
+        font-size: clamp(28px, 8.2vw, 38px) !important;
+        line-height: 1.08 !important;
+        letter-spacing: -0.01em !important;
+        margin: 0 !important;
+      }
+
+      .hero-divider-bar {
+        width: 34px !important;
+        height: 2px !important;
+        margin: clamp(14px, 2vh, 18px) 0 !important;
+      }
+
+      .hero-sub {
+        max-width: min(440px, 100%) !important;
+        margin-bottom: clamp(18px, 2.8vh, 24px) !important;
+        background: rgba(255, 255, 255, 0.04) !important;
+        backdrop-filter: blur(3px) !important;
+        -webkit-backdrop-filter: blur(3px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 8px !important;
+        padding: 10px 14px !important;
+        box-sizing: border-box !important;
+      }
+
+      .body-hero {
+        font-size: clamp(12.5px, 3.4vw, 14px) !important;
+        line-height: 1.55 !important;
+        color: rgba(245, 248, 246, 0.96) !important;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9) !important;
+      }
+
+      .hero-cta-action {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0 !important;
+      }
+
+      .hero-join-cta-btn {
+        padding: 13px 28px !important;
+        font-size: 11.5px !important;
+        letter-spacing: 0.14em !important;
+      }
+
+      .hero-secondary-cta-btn {
+        display: none !important;
+      }
+
+      .hero-spacer {
+        min-height: clamp(30px, 6vh, 60px) !important;
       }
 
       .h-sec {
         font-size: clamp(22px, 5.2vw, 34px) !important;
-      }
-
-      .hero-top {
-        max-width: 100% !important;
-        padding-top: calc(var(--nav-h) + 12px) !important;
-      }
-
-      .hero-sub {
-        max-width: 100% !important;
-        margin-top: 10px !important;
-      }
-
-      .body-hero {
-        font-size: 13.5px !important;
-        line-height: 1.5 !important;
       }
 
       .chapters {
@@ -3865,14 +4136,14 @@
       <span class="brand-tx"><b>SEBC × SUN</b><i>SANDIP E-CLUB · NASHIK</i></span>
     </a>
     <nav class="nav-links" id="navlinks">
-      <a class="nav-link on" href="/home" data-cursor><i
-          class="fa-solid fa-house mobile-icon"></i><span>Home</span></a>
+      <a class="nav-link on" href="/home" data-cursor><i class="fa-solid fa-house mobile-icon"></i><span>Home</span></a>
       <a class="nav-link" href="/events" data-cursor><i
           class="fa-solid fa-calendar-days mobile-icon"></i><span>Events</span></a>
       <a class="nav-link" href="/team" data-cursor><i class="fa-solid fa-users mobile-icon"></i><span>Team</span></a>
       <a class="nav-link" href="/arcade" data-cursor><i
           class="fa-solid fa-gamepad mobile-icon"></i><span>Arcade</span></a>
-      <a class="nav-link mobile-only" href="/register" data-cursor><i class="fa-solid fa-user-plus mobile-icon"></i><span>Register</span></a>
+      <a class="nav-link mobile-only" href="/register" data-cursor><i
+          class="fa-solid fa-user-plus mobile-icon"></i><span>Register</span></a>
     </nav>
     <a class="nav-cta-btn desktop-only" href="/register" data-cursor>
       <span>Register Now</span><i class="btn-arrow">→</i>
@@ -3888,40 +4159,69 @@
     <!-- ============================================================ hero -->
     <section class="hero" id="hero" data-cam="0">
       <div class="hero-top">
-        <div class="eyebrow" data-rv="fade"><span class="dot"></span> ADMISSIONS OPEN · SUN LAUNCHPAD 2026 · <span style="color:var(--gold, #d4af37); font-weight:700; letter-spacing:0.16em;">SANDIP ENTREPRENEURSHIP &amp; BUSINESS CLUB</span></div>
+        <div class="hero-pill-badge" data-rv="fade">
+          <span class="pill-dot"></span>
+          <span class="pill-text">REGISTRATIONS OPEN</span>
+          <span class="pill-sep">|</span>
+          <span class="pill-text">SUN ENTREPRENEURSHIP CLUB</span>
+        </div>
+
+        <div class="hero-eyebrow-wrap" data-rv="fade">
+          <div class="hero-eyebrow">SUN LAUNCHPAD 2026</div>
+          <div class="hero-eyebrow-rule"></div>
+        </div>
+
         <h1 class="display h-hero">
-          <span class="mask-line"><span>Build your startup</span></span>
-          <span class="mask-line"><span>before you</span></span>
-          <span class="mask-line red-accent"><span class="red-accent">graduate.</span></span>
+          <span class="mask-line"><span>HAVE AN IDEA?</span></span>
+          <span class="mask-line"><span>PITCH IT.</span></span>
+          <span class="mask-line"><span>TEST IT.</span></span>
+          <span class="mask-line red-accent"><span class="red-accent">TAKE IT FURTHER.</span></span>
         </h1>
-        <p class="hero-sub body-hero" data-rv="up"><strong style="color:var(--bone); font-weight:700">SEBC (Sandip Entrepreneurship &amp; Business Club)</strong> is Sandip University's founder track — a 7-day idea sprint, two pitch rounds and seed-grant pathways that take you from a rough thought to a fundable venture. No company required. No equity taken.</p>
+
+        <div class="hero-divider-bar" data-rv="fade"></div>
+
+        <p class="hero-sub body-hero" data-rv="up"><strong style="color:var(--bone); font-weight:700">SUN Launchpad
+            2026</strong> is a student-focused idea and pitch program designed to give students a platform to present
+          their ideas, receive feedback, and explore the next steps toward building a real venture.</p>
+
+        <div class="hero-cta-action" data-rv="up">
+          <a class="hero-join-cta-btn" href="/register" data-cursor>
+            <span>REGISTER YOUR IDEA</span><i class="btn-arrow">→</i>
+          </a>
+          <a class="hero-secondary-cta-btn" href="/events" data-cursor>
+            <span>EXPLORE THE EVENT</span>
+          </a>
+        </div>
       </div>
 
       <div class="hero-spacer"></div>
 
       <div class="hero-foot">
-        <div class="hero-cue" data-rv="fade" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+        <div class="hero-cue" data-rv="fade"
+          style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
           <div style="display:flex; align-items:center; gap:8px;">
             <span>Scroll to enter</span><span class="track"><i></i></span>
           </div>
-          <span class="desktop-hint-link" style="font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold, #d4af37); font-weight:700; opacity:0.85;">THE WORLD OPENS WIDER ON A BIGGER SCREEN ↗</span>
+          <span class="desktop-hint-link"
+            style="font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold, #d4af37); font-weight:700; opacity:0.85;">THE
+            WORLD OPENS WIDER ON A BIGGER SCREEN ↗</span>
         </div>
         <div class="chapters" id="chips">
           <a class="chip" href="/register" data-chip="0" data-rv="up" data-cursor><span class="num">01</span>
             <span class="tx"><b>Submit your idea</b>
-              <p>Apply for the SUN Launchpad 2026 cohort.</p>
+              <p>Register for SUN Launchpad 2026.</p>
             </span></a>
           <a class="chip" href="/events" data-chip="1" data-rv="up" data-cursor><span class="num">02</span>
-            <span class="tx"><b>Explore events</b>
-              <p>Pitch nights, workshops &amp; founder sessions.</p>
+            <span class="tx"><b>Explore the event</b>
+              <p>Two pitch rounds and feedback sessions.</p>
             </span></a>
           <a class="chip" href="/team" data-chip="2" data-rv="up" data-cursor><span class="num">03</span>
             <span class="tx"><b>Meet the team</b>
-              <p>Students building the startup engine.</p>
+              <p>The student team behind the program.</p>
             </span></a>
           <a class="chip" href="/register" data-chip="3" data-rv="up" data-cursor><span class="num">04</span>
-            <span class="tx"><b>Apply now</b>
-              <p>Rough drafts welcome. Zero equity taken.</p>
+            <span class="tx"><b>Register your idea</b>
+              <p>Free to participate. All students welcome.</p>
             </span></a>
         </div>
       </div>
@@ -3963,39 +4263,44 @@
         <span class="k"><b>01</b> — How it works</span><span class="rule"></span>
       </div>
       <div class="gate-grid">
-        <h2 class="display h-sec" data-rv="up">From classroom to company in <span class="red-accent">three moves.</span>
+        <h2 class="display h-sec" data-rv="up">From idea to opportunity — in <span class="red-accent">two pitch
+            rounds.</span>
         </h2>
         <div class="gate-copy">
-          <p class="lead" data-rv="up">A tight, guided program — not another seminar club. Every week moves your idea
-            closer to revenue or funding.</p>
+          <p class="lead" data-rv="up">Start with your idea, present it in Round 1, and selected participants move to a
+            deeper Round 2 evaluation. The strongest opportunities may then be considered for the 6-month incubation
+            program.</p>
         </div>
       </div>
       <div class="moves-grid" data-rv="up">
         <article class="move-card">
           <span class="move-num">01</span>
-          <h3>Innovate</h3>
-          <p>A guided sprint that turns everyday campus frustrations into sharp, testable problem statements.</p>
+          <h3>Idea</h3>
+          <p>Bring your problem and proposed solution. Round 1 focuses on clarity, problem understanding, solution and
+            the ability to communicate the idea.</p>
           <div class="move-tags">
-            <span class="move-tag">Idea sprint</span>
-            <span class="move-tag">Problem labs</span>
+            <span class="move-tag">Problem clarity</span>
+            <span class="move-tag">Communication</span>
           </div>
         </article>
         <article class="move-card">
           <span class="move-num">02</span>
-          <h3>Incubate</h3>
-          <p>Non-dilutive grants, SCIIE prototyping labs and weekly mentor reviews that turn drafts into demos.</p>
+          <h3>Pitch</h3>
+          <p>Present. Answer questions. Learn from feedback. Round 2 goes deeper into the business idea, users,
+            feasibility and execution thinking.</p>
           <div class="move-tags">
-            <span class="move-tag">Seed grants</span>
-            <span class="move-tag">Build support</span>
+            <span class="move-tag">Business model</span>
+            <span class="move-tag">Feasibility</span>
           </div>
         </article>
         <article class="move-card">
           <span class="move-num">03</span>
-          <h3>Launch</h3>
-          <p>Pitch to real investors on a real stage. Graduate with a venture, a network and a founder identity.</p>
+          <h3>Next Step</h3>
+          <p>Explore the path beyond the event. Selected teams may be considered for the SUN Entrepreneurship Club's
+            6-month incubation program.</p>
           <div class="move-tags">
-            <span class="move-tag">Demo day</span>
-            <span class="move-tag">Funding</span>
+            <span class="move-tag">Incubation opportunity</span>
+            <span class="move-tag">Growth</span>
           </div>
         </article>
       </div>
@@ -4003,20 +4308,20 @@
       <!-- Key Statistics Counter Row -->
       <div class="gate-stats" data-rv="up">
         <div class="stat-box">
-          <b>₹1.5Cr+</b>
-          <span>Seed grant pool</span>
+          <b>2</b>
+          <span>Pitch Rounds</span>
         </div>
         <div class="stat-box">
-          <b>50+</b>
-          <span>Ventures incubated</span>
-        </div>
-        <div class="stat-box">
-          <b>75+</b>
-          <span>Mentors &amp; judges</span>
+          <b>6-Month</b>
+          <span>Incubation Opportunity</span>
         </div>
         <div class="stat-box">
           <b>100%</b>
-          <span>Equity you keep</span>
+          <span>Free to Participate</span>
+        </div>
+        <div class="stat-box">
+          <b>✓</b>
+          <span>Certificate for Participants</span>
         </div>
       </div>
 
@@ -4024,24 +4329,24 @@
       <div class="marquee-wrap" aria-hidden="true">
         <div class="marquee-track">
           <div class="marquee-item">
-            <span>1:1 VC Mentorship</span><span class="dia">◆</span>
-            <span>Prototyping Labs</span><span class="dia">◆</span>
-            <span>Founder Pass</span><span class="dia">◆</span>
-            <span>Pitch Nights</span><span class="dia">◆</span>
-            <span>Zero Equity Taken</span><span class="dia">◆</span>
-            <span>SCIIE Incubation</span><span class="dia">◆</span>
-            <span>SUN Launchpad 2026</span><span class="dia">◆</span>
-            <span>Seed Grants</span><span class="dia">◆</span>
+            <span>TECH</span><span class="dia">◆</span>
+            <span>HEALTH</span><span class="dia">◆</span>
+            <span>FARMING</span><span class="dia">◆</span>
+            <span>COMMERCE</span><span class="dia">◆</span>
+            <span>LEARNING</span><span class="dia">◆</span>
+            <span>AUTOMATION</span><span class="dia">◆</span>
+            <span>LOGISTICS</span><span class="dia">◆</span>
+            <span>ROBOTICS</span><span class="dia">◆</span>
           </div>
           <div class="marquee-item">
-            <span>1:1 VC Mentorship</span><span class="dia">◆</span>
-            <span>Prototyping Labs</span><span class="dia">◆</span>
-            <span>Founder Pass</span><span class="dia">◆</span>
-            <span>Pitch Nights</span><span class="dia">◆</span>
-            <span>Zero Equity Taken</span><span class="dia">◆</span>
-            <span>SCIIE Incubation</span><span class="dia">◆</span>
-            <span>SUN Launchpad 2026</span><span class="dia">◆</span>
-            <span>Seed Grants</span><span class="dia">◆</span>
+            <span>TECH</span><span class="dia">◆</span>
+            <span>HEALTH</span><span class="dia">◆</span>
+            <span>FARMING</span><span class="dia">◆</span>
+            <span>COMMERCE</span><span class="dia">◆</span>
+            <span>LEARNING</span><span class="dia">◆</span>
+            <span>AUTOMATION</span><span class="dia">◆</span>
+            <span>LOGISTICS</span><span class="dia">◆</span>
+            <span>ROBOTICS</span><span class="dia">◆</span>
           </div>
         </div>
       </div>
@@ -4069,16 +4374,17 @@
         </span>
       </div>
       <div class="sec-head" data-rv="fade">
-        <span class="k"><b>02</b> — Why Sandip</span><span class="rule"></span>
+        <span class="k"><b>02</b> — Why participate</span><span class="rule"></span>
       </div>
       <div class="gate-grid">
-        <h2 class="display h-sec" data-rv="up">An unfair advantage, built into <span class="red-accent">campus.</span>
+        <h2 class="display h-sec" data-rv="up">A platform to test your idea and take the <span class="red-accent">next
+            step.</span>
         </h2>
         <div class="gate-copy">
-          <p class="lead" data-rv="up">A 250-acre university in Nashik wired for builders — recognised incubation, real
-            labs and a living test market outside your hostel door.</p>
+          <p class="lead" data-rv="up">SUN Launchpad gives students a structured opportunity to present ideas, receive
+            feedback and explore what it takes to build a real venture.</p>
           <a class="arrowlink" href="/register" data-rv="fade" data-cursor>
-            <span>Claim your spot</span>
+            <span>Register your idea</span>
             <span class="ar"><svg viewBox="0 0 14 14" fill="none">
                 <path d="M3 11 11 3M5 3h6v6" stroke="#dfe7e0" stroke-width="1.3" />
               </svg></span>
@@ -4094,9 +4400,9 @@
               </svg></span>
             <i class="glow"
               style="--gx:80.2%; --gy:23.9%; --gr:22%; --gt:6.1s; --gt2:9.7s; --gc1:rgba(255,142,108,.50); --gc2:rgba(212,56,38,.24)"></i>
-            <div class="card-lab"><b>Incubation</b></div>
+            <div class="card-lab"><b>Present</b></div>
           </div>
-          <div class="card-meta"><span>01 · Official university pipeline</span><span>01 / 03</span></div>
+          <div class="card-meta"><span>01 · Present your idea</span><span>01 / 03</span></div>
         </article>
         <article class="card" data-rv="up" data-view="1" data-cursor>
           <div class="card-fr" data-frame>
@@ -4105,9 +4411,9 @@
               </svg></span>
             <i class="glow glow--flame"
               style="--gx:70.5%; --gy:47.2%; --gr:14%; --gt:3.7s; --gt2:5.3s; --gc1:rgba(255,198,124,.62); --gc2:rgba(226,118,40,.30)"></i>
-            <div class="card-lab"><b>SCIIE Labs</b></div>
+            <div class="card-lab"><b>Feedback</b></div>
           </div>
-          <div class="card-meta"><span>02 · Hardware, IoT &amp; Robotics</span><span>02 / 03</span></div>
+          <div class="card-meta"><span>02 · Receive feedback</span><span>02 / 03</span></div>
         </article>
         <article class="card" data-rv="up" data-view="2" data-cursor>
           <div class="card-fr" data-frame>
@@ -4116,28 +4422,33 @@
               </svg></span>
             <i class="glow"
               style="--gx:48.0%; --gy:16.8%; --gr:20%; --gt:7.3s; --gt2:11.2s; --gc1:rgba(255,138,104,.52); --gc2:rgba(208,54,36,.24)"></i>
-            <div class="card-lab"><b>Test Market</b></div>
+            <div class="card-lab"><b>Grow</b></div>
           </div>
-          <div class="card-meta"><span>03 · 250-acre live user base</span><span>03 / 03</span></div>
+          <div class="card-meta"><span>03 · Explore incubation</span><span>03 / 03</span></div>
         </article>
       </div>
 
       <div class="why-features" data-rv="up">
         <div class="why-item">
           <span class="why-num">01</span>
-          <h3>Recognised incubation channel</h3>
-          <p>Apply through an official university pipeline — with documentation, compliance and grant procedures handled
-            for you.</p>
+          <h3>Present your idea</h3>
+          <p>Get the opportunity to explain your problem, solution and vision in front of evaluators.</p>
         </div>
         <div class="why-item">
           <span class="why-num">02</span>
-          <h3>Build rooms, not just classrooms</h3>
-          <p>SCIIE labs for hardware, IoT and robotics, plus mentor-led build weekends to ship your first prototype.</p>
+          <h3>Receive feedback</h3>
+          <p>Use questions and feedback from the pitch rounds to improve your thinking.</p>
         </div>
         <div class="why-item">
           <span class="why-num">03</span>
-          <h3>A 250-acre test market</h3>
-          <p>Pilot with hostels, canteens and classrooms — thousands of real users before you ever spend on ads.</p>
+          <h3>Build your pitch</h3>
+          <p>Develop the ability to communicate an idea clearly and confidently.</p>
+        </div>
+        <div class="why-item">
+          <span class="why-num">04</span>
+          <h3>Explore incubation</h3>
+          <p>Promising teams may get an opportunity to continue into the 6-month incubation program after further
+            evaluation.</p>
         </div>
       </div>
     </section>
@@ -4165,8 +4476,8 @@
         <span class="k"><b>03</b> — First-timer friendly</span><span class="rule"></span>
       </div>
       <div class="cur-head">
-        <h2 class="display h-sec" data-rv="up">Nervous? Good. <span class="red-accent">Start here.</span></h2>
-        <p class="body-lg" data-rv="up">Three fears stop most students from applying. All three are wrong.</p>
+        <h2 class="display h-sec" data-rv="up">Questions? <span class="red-accent">Start here.</span></h2>
+        <p class="body-lg" data-rv="up">Common questions from students considering SUN Launchpad.</p>
       </div>
 
       <div class="faq-accordion" data-rv="up">
@@ -4174,13 +4485,13 @@
           <button type="button" class="faq-header" onclick="toggleFaq('faq-1')" data-cursor>
             <div class="faq-title-wrap">
               <span class="faq-badge">No company needed</span>
-              <span class="faq-question">Do I need a registered startup to apply?</span>
+              <span class="faq-question">Do I need a registered startup to participate?</span>
             </div>
             <span class="faq-icon">+</span>
           </button>
           <div class="faq-body">
-            <p>No. Round 1 is designed for raw ideas — a clear problem, a proposed solution and the courage to pitch for
-              60 seconds. Registration, compliance and grants come later, with our help.</p>
+            <p>No. SUN Launchpad is designed for students with an idea, including early-stage ideas. A registered
+              company is not required simply to present an idea.</p>
           </div>
         </div>
 
@@ -4188,13 +4499,13 @@
           <button type="button" class="faq-header" onclick="toggleFaq('faq-2')" data-cursor>
             <div class="faq-title-wrap">
               <span class="faq-badge">Solo friendly</span>
-              <span class="faq-question">What if I have no team or technical co-founder?</span>
+              <span class="faq-question">Do I need a team?</span>
             </div>
             <span class="faq-icon">+</span>
           </button>
           <div class="faq-body" style="display:none">
-            <p style="color:var(--muted)">Answers and team-matching support will unlock during the cohort onboarding
-              session.</p>
+            <p>No. Students may participate individually or as a team. If your idea requires different skills, you can
+              explore team formation, but a team is not a requirement to submit an idea.</p>
           </div>
         </div>
 
@@ -4207,42 +4518,81 @@
             <span class="faq-icon">+</span>
           </button>
           <div class="faq-body" style="display:none">
-            <p style="color:var(--muted)">Detailed prototype guidelines and lab access details will be provided upon
-              Round 1 submission.</p>
+            <p>No. An early-stage idea is welcome. You should be able to explain the problem, your proposed solution and
+              why the idea matters.</p>
+          </div>
+        </div>
+
+        <div class="faq-row" id="faq-4">
+          <button type="button" class="faq-header" onclick="toggleFaq('faq-4')" data-cursor>
+            <div class="faq-title-wrap">
+              <span class="faq-badge">Free</span>
+              <span class="faq-question">Is there a participation fee?</span>
+            </div>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-body" style="display:none">
+            <p>Participation in SUN Launchpad is planned as free.</p>
+          </div>
+        </div>
+
+        <div class="faq-row" id="faq-5">
+          <button type="button" class="faq-header" onclick="toggleFaq('faq-5')" data-cursor>
+            <div class="faq-title-wrap">
+              <span class="faq-badge">Next steps</span>
+              <span class="faq-question">What happens after Round 1?</span>
+            </div>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-body" style="display:none">
+            <p>Participants who progress will receive information about the next round and its requirements. Round 2 is
+              a deeper evaluation of promising ideas and teams.</p>
+          </div>
+        </div>
+
+        <div class="faq-row" id="faq-6">
+          <button type="button" class="faq-header" onclick="toggleFaq('faq-6')" data-cursor>
+            <div class="faq-title-wrap">
+              <span class="faq-badge">Important</span>
+              <span class="faq-question">Does participating guarantee incubation, funding or investment?</span>
+            </div>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-body" style="display:none">
+            <p>No. Participation does not guarantee incubation, grants, investment, mentorship or any other future
+              opportunity. Such opportunities, if available, are subject to selection and applicable program conditions.
+            </p>
           </div>
         </div>
       </div>
 
-      <!-- 04 — The On-Ramp -->
+      <!-- 04 — Prepare for your pitch -->
       <div style="margin-top:clamp(64px, 10vh, 100px);">
         <div class="sec-head" data-rv="fade">
-          <span class="k"><b>04</b> — The on-ramp</span><span class="rule"></span>
+          <span class="k"><b>04</b> — Prepare for your pitch</span><span class="rule"></span>
         </div>
         <div class="cur-head">
-          <h2 class="display h-sec" data-rv="up">Your first 7 days as a <span class="red-accent">founder.</span></h2>
-          <p class="body-lg" data-rv="up">A guided challenge for each day. Finish all seven and your Round 1 pitch
-            practically writes itself.</p>
+          <h2 class="display h-sec" data-rv="up">Prepare for your <span class="red-accent">pitch.</span></h2>
+          <p class="body-lg" data-rv="up">Five key questions to think through before you present your idea.</p>
         </div>
 
         <div class="on-ramp-box" data-rv="up">
           <div class="day-tabs" id="day-tabs">
-            <button type="button" class="day-tab active" onclick="switchDay(1)" data-cursor>Day 1</button>
-            <button type="button" class="day-tab" onclick="switchDay(2)" data-cursor>Day 2</button>
-            <button type="button" class="day-tab" onclick="switchDay(3)" data-cursor>Day 3</button>
-            <button type="button" class="day-tab" onclick="switchDay(4)" data-cursor>Day 4</button>
-            <button type="button" class="day-tab" onclick="switchDay(5)" data-cursor>Day 5</button>
-            <button type="button" class="day-tab" onclick="switchDay(6)" data-cursor>Day 6</button>
-            <button type="button" class="day-tab" onclick="switchDay(7)" data-cursor>Day 7</button>
+            <button type="button" class="day-tab active" onclick="switchDay(1)" data-cursor>01 Problem</button>
+            <button type="button" class="day-tab" onclick="switchDay(2)" data-cursor>02 People</button>
+            <button type="button" class="day-tab" onclick="switchDay(3)" data-cursor>03 Solution</button>
+            <button type="button" class="day-tab" onclick="switchDay(4)" data-cursor>04 Value</button>
+            <button type="button" class="day-tab" onclick="switchDay(5)" data-cursor>05 Next step</button>
           </div>
 
           <div class="day-panel" id="day-panel-content">
             <div class="day-mission-info">
-              <span class="eyebrow">01 · Today's mission</span>
-              <h3>Find the problem</h3>
-              <p>Write down 3 frustrations you faced this week — in hostels, classes or commute.</p>
+              <span class="eyebrow">01 · Problem</span>
+              <h3>What problem are you trying to solve?</h3>
+              <p>Identify a clear challenge, unmet need, or frustration experienced by people in real life.</p>
             </div>
             <a class="btn-primary" href="/register" data-cursor>
-              <span>Start Day 1</span>
+              <span>Register Your Idea</span>
               <svg viewBox="0 0 14 14" fill="none" width="12" height="12">
                 <path d="M3 11 11 3M5 3h6v6" stroke="#fff" stroke-width="1.3" />
               </svg>
@@ -4257,40 +4607,44 @@
           <span class="k"><b>05</b> — The program</span><span class="rule"></span>
         </div>
         <div class="cur-head">
-          <h2 class="display h-sec" data-rv="up">Two rounds. <span class="red-accent">One founder.</span></h2>
-          <p class="body-lg" data-rv="up">Round 1 rewards clarity and courage. Round 2 rewards economics and execution.
-          </p>
+          <h2 class="display h-sec" data-rv="up">Two rounds. <span class="red-accent">One opportunity to take your idea
+              further.</span></h2>
+          <p class="body-lg" data-rv="up">SUN Launchpad is structured to move from an accessible first pitch to a deeper
+            evaluation of promising ideas and teams.</p>
         </div>
 
         <div class="prog-container" data-rv="up">
           <div class="prog-tabs">
             <button type="button" class="prog-tab-btn active" id="tab-btn-r1" onclick="switchProgTab('r1')"
-              data-cursor>Round 1 · Idea</button>
+              data-cursor>Round 1 — Idea Pitch</button>
             <button type="button" class="prog-tab-btn" id="tab-btn-r2" onclick="switchProgTab('r2')" data-cursor>Round 2
-              · Business</button>
+              — Deeper Business Pitch</button>
           </div>
 
           <div id="prog-panel-r1" class="prog-grid">
             <div class="prog-questions-card">
-              <span class="tagline">60-second pitch · Everyone welcome</span>
-              <h3>Answer four questions. That's the whole round.</h3>
+              <span class="tagline">ROUND 1 — IDEA PITCH</span>
+              <h3>Open to students with an idea.</h3>
+              <p style="color:var(--bone-dim); font-size:14px; line-height:1.6; margin-bottom:16px;">Present the
+                problem, who it affects, your proposed solution and why the idea matters. The round is designed to
+                encourage participation, confidence and clear communication.</p>
               <ul class="prog-questions-list">
                 <li>What problem are you solving?</li>
-                <li>Who feels it every day?</li>
-                <li>What is your proposed fix?</li>
-                <li>Why does it matter now?</li>
+                <li>Who experiences this problem and how?</li>
+                <li>What is your proposed solution?</li>
+                <li>Why would your solution matter to the people you are solving for?</li>
               </ul>
             </div>
 
             <div class="script-card">
               <div class="script-head">
-                <span class="script-badge">PITCH SCRIPT</span>
+                <span class="script-badge">PITCH STRUCTURE</span>
               </div>
-              <p class="script-quote">“Hi, I'm [Name]. [Users] struggle with [Problem]. My fix is [Solution] — and my
-                vision is [Goal].”</p>
+              <p class="script-quote">"Hi, I'm [Name]. [Users] struggle with [Problem]. My proposed solution is
+                [Solution] — and I believe this matters because [Reason]."</p>
               <button type="button" class="btn-primary" onclick="copyPitchScript()" style="align-self:flex-start;"
                 data-cursor id="script-copy-btn">
-                <span>Use this script</span>
+                <span>Copy this structure</span>
                 <svg viewBox="0 0 14 14" fill="none" width="12" height="12">
                   <path d="M3 11 11 3M5 3h6v6" stroke="#fff" stroke-width="1.3" />
                 </svg>
@@ -4300,22 +4654,28 @@
 
           <div id="prog-panel-r2" class="prog-grid" style="display:none">
             <div class="prog-questions-card">
-              <span class="tagline">Execution &amp; Economics</span>
-              <h3>Turn your pitch into a viable business model.</h3>
+              <span class="tagline">ROUND 2 — DEEPER BUSINESS PITCH</span>
+              <h3>Deeper evaluation of promising ideas.</h3>
+              <p style="color:var(--bone-dim); font-size:14px; line-height:1.6; margin-bottom:16px;">
+                Shortlisted/promising participants go deeper into the idea: users or customers, market opportunity,
+                solution feasibility, business model, differentiation and execution plan.</p>
               <ul class="prog-questions-list">
-                <li>Customer discovery and market validation</li>
-                <li>Unit economics and go-to-market plan</li>
-                <li>Seed grant allocation and milestone roadmap</li>
+                <li>Users or customers &amp; market opportunity</li>
+                <li>Solution feasibility &amp; differentiation</li>
+                <li>Business model &amp; execution thinking</li>
               </ul>
             </div>
             <div class="script-card">
               <div class="script-head">
-                <span class="script-badge">ROUND 2 PASS</span>
+                <span class="script-badge">ROUND 2 DETAILS</span>
               </div>
-              <p class="script-quote">Shortlisted founders present live to seasoned angel investors and the SCIIE
-                incubation committee.</p>
+              <p class="script-quote">The exact judging criteria will be published in the official participant/judge
+                guide. Details and requirements are shared directly with selected participants.</p>
               <a class="btn-primary" href="/register" style="align-self:flex-start;" data-cursor>
-                <span>Apply for Round 2</span>
+                <span>Register for Round 1 first</span>
+                <svg viewBox="0 0 14 14" fill="none" width="12" height="12">
+                  <path d="M3 11 11 3M5 3h6v6" stroke="#fff" stroke-width="1.3" />
+                </svg>
               </a>
             </div>
           </div>
@@ -4348,42 +4708,47 @@
       <div class="sec-head" data-rv="fade">
         <span class="k"><b>06</b> — What you leave with</span><span class="rule"></span>
       </div>
-      <h2 class="display h-sec" data-rv="up">Not a certificate. <span class="red-accent">A toolkit.</span></h2>
+      <h2 class="display h-sec" data-rv="up">More than a pitch. <span class="red-accent">A starting point.</span></h2>
 
       <div class="toolkit-grid" data-rv="up">
         <div class="toolkit-card">
-          <h3>Verified Founder Pass</h3>
-          <p>A credential that opens mentor rooms, labs and pitch stages.</p>
+          <h3>Pitch experience</h3>
+          <p>Practice presenting an idea clearly and answering questions.</p>
         </div>
         <div class="toolkit-card">
-          <h3>Investor-ready narrative</h3>
-          <p>Leave with a tight 60-second pitch and a structured deck outline.</p>
+          <h3>Feedback</h3>
+          <p>Learn from the questions and evaluation you receive during the program.</p>
         </div>
         <div class="toolkit-card">
-          <h3>Mentors + lab access</h3>
-          <p>Weekly reviews with operators and hands-on prototype support.</p>
+          <h3>Clarity</h3>
+          <p>Understand what needs to be strengthened in your problem, solution and business thinking.</p>
         </div>
         <div class="toolkit-card">
-          <h3>Grant eligibility</h3>
-          <p>Shortlisted teams unlock non-dilutive seed funding pathways.</p>
+          <h3>Certificate</h3>
+          <p>Participants receive a certificate, subject to the event's participation requirements.</p>
+        </div>
+        <div class="toolkit-card">
+          <h3>Incubation opportunity</h3>
+          <p>Selected/promising teams may be considered for the 6-month incubation program after the Launchpad.</p>
         </div>
       </div>
 
       <div class="leave-cta-banner" data-rv="up">
         <div class="leave-cta-left">
-          <span class="cohort-tag">2026 cohort · Limited pitch slots</span>
-          <h2>Your idea is the only <span class="red-accent">entry ticket.</span></h2>
-          <p>Register in five minutes. Get your verified Founder Pass instantly and walk into Round 1 ready.</p>
+          <span class="cohort-tag">SUN LAUNCHPAD 2026 · REGISTRATION OPEN</span>
+          <h2>Have an idea? <span class="red-accent">Put it on the pitch stage.</span></h2>
+          <p>You do not need a finished startup to begin. Submit your idea, prepare for the pitch rounds and take the
+            next step with the SUN Entrepreneurship Club.</p>
         </div>
         <div class="leave-btn-col">
           <a class="btn-primary" href="/register" data-cursor>
-            <span>Register now</span>
+            <span>Register Your Idea</span>
             <svg viewBox="0 0 14 14" fill="none" width="12" height="12">
               <path d="M3 11 11 3M5 3h6v6" stroke="#fff" stroke-width="1.3" />
             </svg>
           </a>
           <a class="btn-secondary" href="/events" data-cursor>
-            <span>See the events</span>
+            <span>View Event Details</span>
           </a>
         </div>
       </div>
@@ -4481,41 +4846,41 @@
           <img src="/sandip-university-logo.png" alt="Sandip University"
             style="width:34px; height:34px; object-fit:contain; display:block; margin-bottom:4px;" />
           <div style="display:flex; flex-direction:column; gap:4px;">
-            <strong style="font-size:16px; letter-spacing:0.12em; color:var(--bone)">SEBC × SUN</strong>
-            <span style="font-size:11px; letter-spacing:0.16em; color:var(--muted)">Sandip E-Club · Nashik</span>
+            <strong style="font-size:16px; letter-spacing:0.12em; color:var(--bone)">SUN Entrepreneurship Club</strong>
+            <span style="font-size:11px; letter-spacing:0.16em; color:var(--muted)">Sandip University, Nashik</span>
           </div>
-          <p>Sandip Entrepreneurship &amp; Business Club — turning raw student ideas into fundable ventures, on campus
-            in Nashik.</p>
+          <p>A student-led entrepreneurship community focused on ideas, learning, collaboration and opportunities to
+            explore venture building.</p>
         </div>
         <div>
-          <h4>Explore</h4>
+          <h4>Navigation</h4>
           <ul>
             <li><a href="/home" data-cursor>Home</a></li>
             <li><a href="/events" data-cursor>Events</a></li>
-            <li><a href="/team" data-cursor>Team</a></li>
-            <li><a href="/arcade" data-cursor>Arcade</a></li>
             <li><a href="/register" data-cursor>Register</a></li>
+            <li><a href="/team" data-cursor>Team</a></li>
+            <li><a href="/events" data-cursor>Contact / Social Links</a></li>
           </ul>
         </div>
         <div>
           <h4>Program</h4>
           <ul>
+            <li><a href="/events" data-cursor>SUN Launchpad 2026</a></li>
             <li><a href="/events" data-cursor>Round 1 — Idea Pitch</a></li>
-            <li><a href="/events" data-cursor>Round 2 — Business Pitch</a></li>
-            <li><a href="/register" data-cursor>7-Day Idea Sprint</a></li>
-            <li><a href="/register" data-cursor>Founder Pass</a></li>
+            <li><a href="/events" data-cursor>Round 2 — Deeper Business Pitch</a></li>
+            <li><a href="/events" data-cursor>6-Month Incubation Program</a></li>
           </ul>
         </div>
         <div>
           <h4>Find Us</h4>
           <ul>
-            <li><span style="color:var(--bone-dim); font-size:13px; line-height:1.6">SCIIE Hub, Block-B<br>Sandip
-                University,<br>Nashik, Maharashtra</span></li>
+            <li><span style="color:var(--bone-dim); font-size:13px; line-height:1.6">Sandip University
+                Campus,<br>Nashik, Maharashtra</span></li>
             <li style="margin-top:14px;"><span
-                style="font-size:10px; letter-spacing:0.16em; color:var(--gold); text-transform:uppercase; font-weight:600">2026
-                cohort open</span><br><span style="font-size:11px; color:var(--muted)">Limited pitch slots.</span><br><a
-                href="/register" class="btn-primary" style="margin-top:8px; padding:6px 14px; font-size:10px;"
-                data-cursor>Apply</a></li>
+                style="font-size:10px; letter-spacing:0.16em; color:var(--gold); text-transform:uppercase; font-weight:600">SUN
+                Launchpad 2026</span><br><span style="font-size:11px; color:var(--muted)">Free to
+                participate.</span><br><a href="/register" class="btn-primary"
+                style="margin-top:8px; padding:6px 14px; font-size:10px;" data-cursor>Register Your Idea</a></li>
           </ul>
         </div>
       </div>
@@ -4524,14 +4889,24 @@
         <span><a href="/admin" style="color:var(--muted); text-decoration:none" data-cursor>Admin</a> · Built by the
           SEBC Technical Team</span>
         <!-- Interactive Creator Credits Easter Egg -->
-        <div class="creator-credits-box" style="width:100%; margin-top:16px; padding-top:14px; border-top:1px solid rgba(223,231,224,0.08); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; text-align:center;">
-          <button type="button" id="creator-trigger-btn" class="creator-trigger-btn" onclick="revealCreators()" data-cursor style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,90,78,0.3); color:var(--bone); font-family:monospace; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; font-weight:700; padding:8px 20px; border-radius:30px; cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition:all 0.3s ease; box-shadow:0 0 18px rgba(255,90,78,0.15);">
+        <div class="creator-credits-box"
+          style="width:100%; margin-top:16px; padding-top:14px; border-top:1px solid rgba(223,231,224,0.08); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; text-align:center;">
+          <button type="button" id="creator-trigger-btn" class="creator-trigger-btn" onclick="revealCreators()"
+            data-cursor
+            style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,90,78,0.3); color:var(--bone); font-family:monospace; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; font-weight:700; padding:8px 20px; border-radius:30px; cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition:all 0.3s ease; box-shadow:0 0 18px rgba(255,90,78,0.15);">
             <span style="color:var(--light-red, #ff5a4e);">◆</span> <span>CURIOUS WHO BUILT THIS WORLD? ↗</span>
           </button>
-          <div id="creator-sequence-card" class="creator-sequence-card" style="display:none; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; margin-top:6px;">
-            <span class="creator-badge cr-1" style="font-size:12.5px; font-weight:700; letter-spacing:0.06em; color:#fff; background:rgba(255,90,78,0.14); border:1px solid rgba(255,90,78,0.4); padding:6px 14px; border-radius:8px; box-shadow:0 0 16px rgba(255,90,78,0.3); opacity:0; transform:translateY(8px); transition:all 0.45s ease;">1. Jayesh Patil</span>
-            <span class="creator-badge cr-2" style="font-size:12.5px; font-weight:700; letter-spacing:0.06em; color:#fff; background:rgba(255,150,50,0.14); border:1px solid rgba(255,150,50,0.4); padding:6px 14px; border-radius:8px; box-shadow:0 0 16px rgba(255,150,50,0.3); opacity:0; transform:translateY(8px); transition:all 0.45s ease;">2. Ashirwad Deshmukh</span>
-            <span class="creator-badge cr-3" style="font-size:12.5px; font-weight:700; letter-spacing:0.06em; color:#fff; background:rgba(212,175,55,0.14); border:1px solid rgba(212,175,55,0.4); padding:6px 14px; border-radius:8px; box-shadow:0 0 16px rgba(212,175,55,0.3); opacity:0; transform:translateY(8px); transition:all 0.45s ease;">3. M.D. Praveen</span>
+          <div id="creator-sequence-card" class="creator-sequence-card"
+            style="display:none; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; margin-top:6px;">
+            <span class="creator-badge cr-1"
+              style="font-size:12.5px; font-weight:700; letter-spacing:0.06em; color:#fff; background:rgba(255,90,78,0.14); border:1px solid rgba(255,90,78,0.4); padding:6px 14px; border-radius:8px; box-shadow:0 0 16px rgba(255,90,78,0.3); opacity:0; transform:translateY(8px); transition:all 0.45s ease;">1.
+              Jayesh Patil</span>
+            <span class="creator-badge cr-2"
+              style="font-size:12.5px; font-weight:700; letter-spacing:0.06em; color:#fff; background:rgba(255,150,50,0.14); border:1px solid rgba(255,150,50,0.4); padding:6px 14px; border-radius:8px; box-shadow:0 0 16px rgba(255,150,50,0.3); opacity:0; transform:translateY(8px); transition:all 0.45s ease;">2.
+              Ashirwad Deshmukh</span>
+            <span class="creator-badge cr-3"
+              style="font-size:12.5px; font-weight:700; letter-spacing:0.06em; color:#fff; background:rgba(212,175,55,0.14); border:1px solid rgba(212,175,55,0.4); padding:6px 14px; border-radius:8px; box-shadow:0 0 16px rgba(212,175,55,0.3); opacity:0; transform:translateY(8px); transition:all 0.45s ease;">3.
+              M.D. Praveen</span>
           </div>
         </div>
       </div>
@@ -8190,52 +8565,75 @@ void main () {
       function boot() {
         makeGrain();
         wireReveals(); wireForegroundStages(); wireNav(); wireHeroExit(); wireFocus(); wireCursor();
+
+        // Check if session has already initialized kage scene
+        const isSessionWarm = Boolean(sessionStorage.getItem('sebc_kage_initialized'));
+        if (isSessionWarm) {
+          preEl.classList.add('done');
+          document.body.classList.remove('is-locked');
+          for (let i = 0; i < JOBS.length; i++) {
+            try { JOBS[i][1](); } catch (e) { console.error(e); }
+          }
+          start();
+          return;
+        }
+
         document.body.classList.add('is-locked');
         let currentJob = 0;
-        let targetProgress = 0;
+        let targetProgress = 0.05;
         let displayedProgress = 0;
         let jobsFinished = false;
+        let lastTime = performance.now();
 
         const updateVisuals = () => {
-          preFill.style.right = ((1 - displayedProgress) * 100).toFixed(1) + '%';
-          const pct = Math.round(displayedProgress * 100);
+          preFill.style.right = Math.max(0, (1 - displayedProgress) * 100).toFixed(1) + '%';
+          const pct = Math.min(100, Math.round(displayedProgress * 100));
           prePct.textContent = pct;
           if (preDyn) {
             if (pct < 22) {
               preDyn.textContent = 'IGNITING STUDENT FOUNDER ENGINE...';
               if (preStage) preStage.textContent = 'SYSTEM INITIALIZATION';
             } else if (pct < 48) {
-              preDyn.textContent = 'SYNCING SCIIE PROTOTYPING LABS...';
+              preDyn.textContent = 'PREPARING EVENT ENVIRONMENT...';
               if (preStage) preStage.textContent = 'CONNECTING CAMPUS RESOURCES';
             } else if (pct < 75) {
               preDyn.textContent = 'PREPARING STUDENT PITCH STAGES...';
-              if (preStage) preStage.textContent = 'LOADING VENTURE PATHWAYS';
-            } else if (pct < 96) {
+              if (preStage) preStage.textContent = 'LOADING EVENT PATHWAYS';
+            } else if (pct < 98) {
               preDyn.textContent = 'CALIBRATING SUN LAUNCHPAD 2026...';
-              if (preStage) preStage.textContent = 'ACCELERATION PIPELINE READY';
+              if (preStage) preStage.textContent = 'SUN LAUNCHPAD READY';
             } else {
-              preDyn.textContent = 'WELCOME FOUNDERS — READY TO BUILD';
-              if (preStage) preStage.textContent = 'SEBC × SANDIP UNIVERSITY';
+              preDyn.textContent = 'WELCOME — READY TO PITCH';
+              if (preStage) preStage.textContent = 'SUN ENTREPRENEURSHIP CLUB';
             }
           }
         };
 
-        const animateProgress = () => {
-          if (displayedProgress < targetProgress) {
-            const diff = targetProgress - displayedProgress;
-            const step = Math.max(diff * 0.14, 0.015);
-            displayedProgress = Math.min(targetProgress, displayedProgress + step);
-            updateVisuals();
-          }
-          if (!jobsFinished || displayedProgress < 0.999) {
-            requestAnimationFrame(animateProgress);
+        const animateProgress = (now) => {
+          const dt = Math.min(Math.max((now - lastTime) / 1000, 0.001), 0.05);
+          lastTime = now;
+
+          if (jobsFinished) {
+            const diff = 1 - displayedProgress;
+            displayedProgress += Math.max(diff * 14 * dt, 0.15 * dt);
+            if (displayedProgress >= 0.998) {
+              displayedProgress = 1;
+              updateVisuals();
+              sessionStorage.setItem('sebc_kage_initialized', '1');
+              setTimeout(start, 120);
+              return;
+            }
           } else {
-            displayedProgress = 1;
-            updateVisuals();
-            setTimeout(start, 160);
+            const activeTarget = Math.max(targetProgress, displayedProgress + 0.015);
+            const diff = activeTarget - displayedProgress;
+            displayedProgress += diff * (1 - Math.exp(-9 * dt));
+            displayedProgress = Math.min(0.95, displayedProgress);
           }
+
+          updateVisuals();
+          requestAnimationFrame(animateProgress);
         };
-        requestAnimationFrame(animateProgress);
+        requestAnimationFrame((t) => { lastTime = t; animateProgress(t); });
 
         const runNextJob = () => {
           if (currentJob >= JOBS.length) {
@@ -8246,9 +8644,9 @@ void main () {
           const j = JOBS[currentJob];
           const onJobDone = () => {
             currentJob++;
-            targetProgress = currentJob / JOBS.length;
+            targetProgress = Math.max(0.1, currentJob / JOBS.length);
             if (currentJob < JOBS.length) {
-              setTimeout(runNextJob, 50);
+              setTimeout(runNextJob, 8);
             } else {
               jobsFinished = true;
               targetProgress = 1;
@@ -8263,7 +8661,7 @@ void main () {
           (r && r.then) ? r.then(onJobDone, onJobDone) : onJobDone();
         };
 
-        setTimeout(runNextJob, 60);
+        setTimeout(runNextJob, 16);
       }
 
       function fallback(err) {
@@ -8345,6 +8743,44 @@ void main () {
         }
       };
 
+      const PREP_STEPS = [
+        {
+          num: '01',
+          name: 'Problem',
+          eyebrow: '01 · Problem',
+          heading: 'What problem are you trying to solve?',
+          desc: 'Identify a clear challenge, unmet need, or frustration experienced by people in real life.'
+        },
+        {
+          num: '02',
+          name: 'People',
+          eyebrow: '02 · People',
+          heading: 'Who experiences this problem and how?',
+          desc: 'Describe the specific individuals, groups, or communities that encounter this problem regularly.'
+        },
+        {
+          num: '03',
+          name: 'Solution',
+          eyebrow: '03 · Solution',
+          heading: 'What are you proposing?',
+          desc: 'Explain your proposed idea, how it directly addresses the problem, and how it works.'
+        },
+        {
+          num: '04',
+          name: 'Value',
+          eyebrow: '04 · Value',
+          heading: 'Why would your solution matter to the people you are solving for?',
+          desc: 'Articulate why your approach makes a tangible difference and why users would care.'
+        },
+        {
+          num: '05',
+          name: 'Next step',
+          eyebrow: '05 · Next step',
+          heading: 'What would you build, test or validate next?',
+          desc: 'Outline your immediate next step to build, test or validate your idea after presenting.'
+        }
+      ];
+
       window.switchDay = function (dayNum) {
         const tabs = document.querySelectorAll('#day-tabs .day-tab');
         tabs.forEach((tab, i) => {
@@ -8352,30 +8788,18 @@ void main () {
         });
         const content = document.getElementById('day-panel-content');
         if (!content) return;
-        if (dayNum === 1) {
-          content.innerHTML = `
-        <div class="day-mission-info">
-          <span class="eyebrow">01 · Today's mission</span>
-          <h3>Find the problem</h3>
-          <p>Write down 3 frustrations you faced this week — in hostels, classes or commute.</p>
-        </div>
-        <a class="btn-primary" href="/register" data-cursor>
-          <span>Start Day 1</span>
-          <svg viewBox="0 0 14 14" fill="none" width="12" height="12"><path d="M3 11 11 3M5 3h6v6" stroke="#fff" stroke-width="1.3"/></svg>
-        </a>
-      `;
-        } else {
-          content.innerHTML = `
-        <div class="day-mission-info">
-          <span class="eyebrow">0${dayNum} · Day ${dayNum} Mission</span>
-          <h3>Day ${dayNum} Sprint Challenge</h3>
-          <p style="color:var(--muted)">Mission unlocks upon completion of Day ${dayNum - 1}. Register to access daily founder prompts.</p>
-        </div>
-        <a class="btn-secondary" href="/register" data-cursor>
-          <span>Unlock Day ${dayNum}</span>
-        </a>
-      `;
-        }
+        const step = PREP_STEPS[dayNum - 1] || PREP_STEPS[0];
+        content.innerHTML = `
+          <div class="day-mission-info">
+            <span class="eyebrow">${step.eyebrow}</span>
+            <h3>${step.heading}</h3>
+            <p>${step.desc}</p>
+          </div>
+          <a class="btn-primary" href="/register" data-cursor>
+            <span>Register Your Idea</span>
+            <svg viewBox="0 0 14 14" fill="none" width="12" height="12"><path d="M3 11 11 3M5 3h6v6" stroke="#fff" stroke-width="1.3"/></svg>
+          </a>
+        `;
       };
 
       window.switchProgTab = function (tab) {
