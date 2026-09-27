@@ -340,11 +340,65 @@ function Shell({ children, page, onLogout, showAdminLink, isDark, setIsDark }) {
           <span style={{ fontWeight: 600, color: 'var(--bone-dim)' }}>
             <button onClick={() => go('admin')} style={{ fontWeight: 600, color: 'var(--bone-dim)' }} data-cursor>Admin</button> · Built by the SEBC Technical Team
           </span>
-          <div className="footer-credits-glow">
-            Made with <span className="credit-heart">❤️</span> by <span className="credit-name">Jayesh</span>, <span className="credit-name">Ashirwad</span>, <span className="credit-name">Praveen</span>
-          </div>
+          <CreatorCredits />
         </div>
       </footer>
+    </div>
+  );
+}
+
+function CreatorCredits() {
+  const [open, setOpen] = useState(false);
+  const [step, setStep] = useState(0);
+
+  const trigger = () => {
+    setOpen(true);
+    setTimeout(() => setStep(1), 120);
+    setTimeout(() => setStep(2), 650);
+    setTimeout(() => setStep(3), 1200);
+  };
+
+  return (
+    <div className="creator-credits-box" style={{ width: '100%', marginTop: '16px', paddingTop: '14px', borderTop: '1px solid var(--line-soft)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '10px', textAlign: 'center' }}>
+      {!open ? (
+        <button
+          type="button"
+          onClick={trigger}
+          data-cursor
+          style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 90, 78, 0.3)',
+            color: 'var(--bone)',
+            fontFamily: 'var(--font-mono, monospace)',
+            fontSize: '11px',
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+            fontWeight: 700,
+            padding: '8px 20px',
+            borderRadius: '30px',
+            cursor: 'pointer',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            transition: 'all 0.3s ease',
+            boxShadow: '0 0 18px rgba(255, 90, 78, 0.15)',
+          }}
+        >
+          <span style={{ color: 'var(--light-red, #ff5a4e)' }}>◆</span> <span>CURIOUS WHO BUILT THIS WORLD? ↗</span>
+        </button>
+      ) : (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', flexWrap: 'wrap', marginTop: '4px' }}>
+          <span style={{ fontSize: '12.5px', fontWeight: 700, letterSpacing: '0.06em', color: '#fff', background: 'rgba(255,90,78,0.14)', border: '1px solid rgba(255,90,78,0.4)', padding: '6px 14px', borderRadius: '8px', boxShadow: '0 0 16px rgba(255,90,78,0.3)', opacity: step >= 1 ? 1 : 0, transform: step >= 1 ? 'translateY(0)' : 'translateY(8px)', transition: 'all 0.45s ease' }}>
+            1. Jayesh Patil
+          </span>
+          <span style={{ fontSize: '12.5px', fontWeight: 700, letterSpacing: '0.06em', color: '#fff', background: 'rgba(255,150,50,0.14)', border: '1px solid rgba(255,150,50,0.4)', padding: '6px 14px', borderRadius: '8px', boxShadow: '0 0 16px rgba(255,150,50,0.3)', opacity: step >= 2 ? 1 : 0, transform: step >= 2 ? 'translateY(0)' : 'translateY(8px)', transition: 'all 0.45s ease' }}>
+            2. Ashirwad Deshmukh
+          </span>
+          <span style={{ fontSize: '12.5px', fontWeight: 700, letterSpacing: '0.06em', color: '#fff', background: 'rgba(212,175,55,0.14)', border: '1px solid rgba(212,175,55,0.4)', padding: '6px 14px', borderRadius: '8px', boxShadow: '0 0 16px rgba(212,175,55,0.3)', opacity: step >= 3 ? 1 : 0, transform: step >= 3 ? 'translateY(0)' : 'translateY(8px)', transition: 'all 0.45s ease' }}>
+            3. M.D. Praveen
+          </span>
+        </div>
+      )}
     </div>
   );
 }
@@ -709,7 +763,7 @@ export function Arcade({ showAdminLink, isDark, setIsDark }) {
                   Sublevel Defender
                 </h2>
               </div>
-              <span style={{ fontSize: '11px', color: 'var(--bone-dim)', fontFamily: 'var(--font-mono, monospace)', background: 'rgba(255, 255, 255, 0.05)', padding: '4px 10px', borderRadius: '4px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+              <span className="desktop-only" style={{ fontSize: '11px', color: 'var(--bone-dim)', fontFamily: 'var(--font-mono, monospace)', background: 'rgba(255, 255, 255, 0.05)', padding: '4px 10px', borderRadius: '4px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
                 TOUCH D-PAD OR [← / → / SPACE]
               </span>
             </div>
@@ -728,7 +782,7 @@ export function Arcade({ showAdminLink, isDark, setIsDark }) {
                 title="Sublevel Defender Arcade Game"
                 style={{
                   width: '100%',
-                  height: 'clamp(460px, 68vh, 600px)',
+                  height: 'clamp(480px, 68vh, 600px)',
                   border: 'none',
                   display: 'block',
                 }}
@@ -745,7 +799,7 @@ export function Arcade({ showAdminLink, isDark, setIsDark }) {
             WebkitBackdropFilter: 'blur(16px)',
             border: '1px solid rgba(223, 231, 224, 0.12)',
             borderRadius: '16px',
-            padding: 'clamp(14px, 2.5vw, 24px)',
+            padding: 'clamp(10px, 2.5vw, 24px)',
             boxShadow: '0 24px 64px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 150, 50, 0.10)',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
@@ -757,7 +811,7 @@ export function Arcade({ showAdminLink, isDark, setIsDark }) {
                   SBLVL SHOT
                 </h2>
               </div>
-              <span style={{ fontSize: '11px', color: 'var(--bone-dim)', fontFamily: 'var(--font-mono, monospace)', background: 'rgba(255, 255, 255, 0.05)', padding: '4px 10px', borderRadius: '4px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+              <span className="desktop-only" style={{ fontSize: '11px', color: 'var(--bone-dim)', fontFamily: 'var(--font-mono, monospace)', background: 'rgba(255, 255, 255, 0.05)', padding: '4px 10px', borderRadius: '4px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
                 [DRAG UP] SHOOT · [SPACE] AUTO-THROW · [R] RESET
               </span>
             </div>

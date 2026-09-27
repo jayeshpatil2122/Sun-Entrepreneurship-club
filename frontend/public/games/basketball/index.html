@@ -188,6 +188,15 @@
       color: #fff;
       box-shadow: 0 0 12px var(--o-glow);
     }
+
+    @media (max-width: 600px) {
+      #hud { top: 12px; left: 12px; }
+      #hud .score { font-size: 13px; line-height: 18px; }
+      #hud .msg { font-size: 36px; min-height: 40px; line-height: 36px; }
+      #top-actions { top: 12px; right: 12px; gap: 6px; }
+      .btn { font-size: 11px; padding: 7px 12px; min-height: 44px; display: inline-flex; align-items: center; }
+      #hint { bottom: 12px; font-size: 11px; padding: 6px 14px; max-width: 90%; text-align: center; }
+    }
   </style>
 
   <script type="importmap">
