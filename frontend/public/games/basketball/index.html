@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SBLVL SHOT — Basketball</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;900&family=Geist+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --k: #0a0a0c;
+      --w1: #f2f2f0;
+      --w2: #c4c4c4;
+      --g1: #757575;
+      --g2: #242426;
+      --o: #ff4d00;
+      --o-glow: rgba(255, 77, 0, 0.35);
+      --sans: "Geist", system-ui, -apple-system, sans-serif;
+      --mono: "Geist Mono", ui-monospace, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--k);
+      color: var(--w1);
+      font-family: var(--sans);
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    #canvas-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: #0d0c0a;
+    }
+
+    #gl {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      touch-action: none;
+      cursor: grab;
+    }
+
+    #gl.grabbing {
+      cursor: grabbing;
+    }
+
+    /* Top HUD */
+    #hud {
+      position: absolute;
+      top: 24px;
+      left: 28px;
+      z-index: 10;
+      font-family: var(--mono);
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--o);
+      background: rgba(255, 77, 0, 0.12);
+      border: 1px solid rgba(255, 77, 0, 0.35);
+      padding: 5px 12px;
+      border-radius: 4px;
+      width: max-content;
+      box-shadow: 0 0 16px var(--o-glow);
+    }
+
+    .badge::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--o);
+      box-shadow: 0 0 8px var(--o);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    #hud .score {
+      font-size: 15px;
+      line-height: 20px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--w1);
+      text-transform: uppercase;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+    }
+
+    #hud .msg {
+      font-size: 56px;
+      line-height: 56px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: #ff5a12;
+      text-transform: uppercase;
+      text-shadow: 0 0 28px rgba(255, 90, 18, 0.7), 0 2px 4px rgba(0, 0, 0, 0.9);
+      min-height: 60px;
+      margin-top: 4px;
+      transition: opacity 0.3s;
+    }
+
+    /* Bottom Control Hint */
+    #hint {
+      position: absolute;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%);
+      z-index: 10;
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--w2);
+      background: rgba(14, 14, 16, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 9px 22px;
+      border-radius: 9999px;
+      pointer-events: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      white-space: nowrap;
+    }
+
+    #hint span {
+      color: var(--o);
+      font-weight: 700;
+    }
+
+    /* Top Right Controls */
+    #top-actions {
+      position: absolute;
+      top: 24px;
+      right: 28px;
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--w1);
+      background: rgba(20, 20, 22, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      background: rgba(255, 77, 0, 0.2);
+      border-color: var(--o);
+      color: #fff;
+      box-shadow: 0 0 12px var(--o-glow);
+    }
+  </style>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.module.min.js"
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <div id="canvas-container">
+    <canvas id="gl"></canvas>
+  </div>
+
+  <div id="hud">
+    <div class="badge">SBLVL SHOT // COURT</div>
+    <div class="score" id="hud-score">SCORE 0 &nbsp;·&nbsp; SHOTS 0</div>
+    <div class="msg" id="hud-msg"></div>
+  </div>
+
+  <div id="hint">
+    <span>DRAG UP</span> ON BALL TO SHOOT &nbsp;·&nbsp; <span>SPACE</span> AUTO-THROW &nbsp;·&nbsp; <span>R</span> RESET
+  </div>
+
+  <div id="top-actions">
+    <button class="btn" id="btn-shoot">SHOOT (SPACE)</button>
+    <button class="btn" id="btn-reset">RESET (R)</button>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'three';
+
+    // Wait briefly for Geist fonts
+    await Promise.race([
+      Promise.all([
+        document.fonts.load('700 60px "Geist"'),
+        document.fonts.load('700 20px "Geist Mono"'),
+        document.fonts.load('600 16px "Geist Mono"')
+      ]).catch(() => {}),
+      new Promise(r => setTimeout(r, 1500))
+    ]);
+
+    const canvas = document.getElementById('gl');
+    const hudScore = document.getElementById('hud-score');
+    const hudMsg = document.getElementById('hud-msg');
+    const btnShoot = document.getElementById('btn-shoot');
+    const btnReset = document.getElementById('btn-reset');
+
+    /* ================= Math / PRNG / Texture Helpers ================= */
+    let seed = 1337;
+    const rand = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
+    const rr = (a, b) => a + rand() * (b - a);
+    const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
+
+    function canvasTex(w, h, draw, opts = {}) {
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      const g = c.getContext('2d'); draw(g, w, h);
+      const t = new THREE.CanvasTexture(c);
+      t.colorSpace = opts.linear ? THREE.NoColorSpace : THREE.SRGBColorSpace;
+      if (opts.repeat) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(opts.repeat[0], opts.repeat[1]); }
+      if (opts.nearest) { t.magFilter = THREE.NearestFilter; t.minFilter = THREE.NearestFilter; }
+      t.anisotropy = 8;
+      t.userData.canvas = c; t.userData.ctx = g;
+      return t;
+    }
+
+    function speckle(g, w, h, n, colors, r = 1.2) {
+      for (let i = 0; i < n; i++) {
+        g.fillStyle = colors[(rand() * colors.length) | 0];
+        const s = r * (0.5 + rand());
+        g.fillRect(rand() * w, rand() * h, s, s);
+      }
+    }
+
+    const std = (o) => new THREE.MeshStandardMaterial(Object.assign({ roughness: 0.9, metalness: 0 }, o));
+    const basic = (o) => new THREE.MeshBasicMaterial(o);
+
+    /* ================= Procedural Textures ================= */
+    // 1. Basketball Leather Texture
+    const ballTex = canvasTex(512, 256, (g, w, h) => {
+      g.fillStyle = '#e8641c'; g.fillRect(0, 0, w, h);
+      speckle(g, w, h, 9000, ['rgba(0,0,0,0.12)', 'rgba(255,255,255,0.08)'], 2);
+      g.strokeStyle = '#1a0d06'; g.lineWidth = 7; g.lineCap = 'round';
+      g.beginPath(); g.moveTo(0, h / 2); g.lineTo(w, h / 2); g.stroke();
+      for (const x of [0, w / 2, w]) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, h); g.stroke(); }
+      g.beginPath(); g.moveTo(w * 0.25, 0); g.quadraticCurveTo(w * 0.05, h / 2, w * 0.25, h); g.stroke();
+      g.beginPath(); g.moveTo(w * 0.75, 0); g.quadraticCurveTo(w * 0.95, h / 2, w * 0.75, h); g.stroke();
+    });
+
+    // 2. Backboard Graphic
+    const backboardTex = canvasTex(1024, 768, (g, w, h) => {
+      g.clearRect(0, 0, w, h);
+      g.beginPath(); g.moveTo(80, 120); g.quadraticCurveTo(512, -56, 944, 120); g.lineTo(944, 520); g.quadraticCurveTo(512, 840, 80, 520); g.closePath();
+      g.fillStyle = 'rgba(20,20,20,0.82)'; g.fill(); g.lineWidth = 18; g.strokeStyle = '#d0d0d0'; g.stroke();
+      g.fillStyle = '#ff5a12'; g.beginPath(); g.arc(512, 224, 86, 0, Math.PI * 2); g.fill();
+      g.strokeStyle = '#3a1a08'; g.lineWidth = 8; g.beginPath(); g.moveTo(426, 224); g.lineTo(598, 224); g.moveTo(512, 138); g.lineTo(512, 310); g.stroke();
+      g.font = '700 104px "Geist", Arial, sans-serif'; g.textAlign = 'right'; g.textBaseline = 'middle'; g.fillStyle = '#e8e8e8'; g.strokeStyle = '#000'; g.lineWidth = 20; g.lineJoin = 'round';
+      g.strokeText('SBLVL', 412, 232); g.fillText('SBLVL', 412, 232); g.textAlign = 'left'; g.strokeText('SHOT!', 612, 232); g.fillText('SHOT!', 612, 232);
+      g.strokeStyle = '#e0e0e0'; g.lineWidth = 12; g.strokeRect(384, 368, 256, 200);
+    });
+
+    // 3. Court Timber Floor Texture
+    function paintBoards(g, w, h, { rows = 32, base = '#a47e52', spread = 16, seam = 'rgba(48,30,14,0.5)', ringAlpha = 0.2 } = {}) {
+      g.fillStyle = base; g.fillRect(0, 0, w, h);
+      const RH = h / rows;
+      for (let r = 0; r < rows; r++) {
+        const y0 = r * RH;
+        const shade = Math.floor((rand() - 0.5) * spread);
+        g.fillStyle = `rgba(0,0,0,${Math.abs(shade) * 0.015})`;
+        g.fillRect(0, y0, w, RH);
+        for (let n = 0; n < 100; n++) {
+          g.fillStyle = `rgba(240,210,170,${(rand() * 0.12).toFixed(3)})`;
+          g.fillRect(rand() * w, y0 + rand() * RH, rr(10, 80), 1.2);
+        }
+        g.fillStyle = seam; g.fillRect(0, y0 + RH - 2, w, 2);
+      }
+    }
+    const floorTex = canvasTex(1024, 1024, (g, w, h) => {
+      paintBoards(g, w, h, { rows: 24, base: '#9c774d', spread: 16 });
+    }, { repeat: [4, 4] });
+
+    /* ================= Three.js Scene Setup ================= */
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x121110);
+    scene.fog = new THREE.FogExp2(0x121110, 0.018);
+
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 80);
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+    function add(mesh, parent) { (parent || scene).add(mesh); mesh.castShadow = true; mesh.receiveShadow = true; return mesh; }
+    function box(w, h, d, mat, x = 0, y = 0, z = 0, parent) { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat); m.position.set(x, y, z); return add(m, parent); }
+    function plane(w, h, mat, x, y, z, parent) { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat); m.position.set(x, y, z); return add(m, parent); }
+    function sphere(r, mat, x, y, z, parent, ws = 32, hs = 24) { const m = new THREE.Mesh(new THREE.SphereGeometry(r, ws, hs), mat); m.position.set(x, y, z); return add(m, parent); }
+    function cyl(rt, rb, h, mat, x, y, z, parent, seg = 20) { const m = new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg), mat); m.position.set(x, y, z); return add(m, parent); }
+
+    function roundedBoxGeo(w, h, d, r, seg = 3) {
+      r = Math.min(r, w / 2 - 0.001, h / 2 - 0.001, d / 2 - 0.001);
+      const iw = w - 2 * r, ih = h - 2 * r, x = -iw / 2, y = -ih / 2;
+      const sh = new THREE.Shape(); const cr = Math.min(r, iw / 2, ih / 2) * 0.999;
+      sh.moveTo(x + cr, y); sh.lineTo(x + iw - cr, y); sh.quadraticCurveTo(x + iw, y, x + iw, y + cr);
+      sh.lineTo(x + iw, y + ih - cr); sh.quadraticCurveTo(x + iw, y + ih, x + iw - cr, y + ih);
+      sh.lineTo(x + cr, y + ih); sh.quadraticCurveTo(x, y + ih, x, y + ih - cr);
+      sh.lineTo(x, y + cr); sh.quadraticCurveTo(x, y, x + cr, y);
+      const g = new THREE.ExtrudeGeometry(sh, { depth: Math.max(0.001, d - 2 * r), bevelEnabled: true, bevelThickness: r, bevelSize: r, bevelSegments: seg, curveSegments: seg * 2 });
+      g.center(); g.computeVertexNormals(); return g;
+    }
+    function rbox(w, h, d, r, mat, x = 0, y = 0, z = 0, parent, seg = 3) { const m = new THREE.Mesh(roundedBoxGeo(w, h, d, r, seg), mat); m.position.set(x, y, z); return add(m, parent); }
+
+    /* ================= Court Environment & Hoop ================= */
+    const matFloor = std({ map: floorTex, roughness: 0.45, metalness: 0.05 });
+    const matSteel = std({ color: 0x444444, roughness: 0.35, metalness: 0.8 });
+    const matMetal = std({ color: 0x282828, roughness: 0.5, metalness: 0.7 });
+    const matSlab = std({ color: 0x222224, roughness: 0.85 });
+    const matWall = std({ color: 0x18181a, roughness: 0.9 });
+
+    // Floor
+    const fl = plane(30, 30, matFloor, 0, 0, 0);
+    fl.rotation.x = -Math.PI / 2;
+    fl.receiveShadow = true;
+
+    // Back Wall
+    box(30, 12, 0.4, matWall, 0, 6, -3.5);
+
+    // Basketball Hoop Constants (exact original values)
+    const HOOP = {
+      x: 1.9,
+      rimY: 2.74,
+      rimZ: -0.95 + 0.21,
+      R: 0.19,
+      tube: 0.017,
+      boardZ: -0.95,
+      boardY: 3.0,
+      boardHalfW: 0.5,
+      boardHalfH: 0.37
+    };
+
+    // Mezzanine / Support structure behind hoop
+    const zF = -1.4;
+    box(15.4, 0.4, 4.6, matSlab, 6.1, 3.75, zF - 2.3);
+    const hx = HOOP.x, hz = HOOP.boardZ;
+    cyl(0.03, 0.03, 0.55, matMetal, hx, 3.3, hz - 0.25, undefined, 10);
+    box(0.04, 0.04, 0.5, matMetal, hx, 3.05, hz - 0.25);
+
+    // Backboard: glass panel + frame + printed graphic
+    const glass = rbox(1.02, 0.76, 0.02, 0.01, std({ color: 0xdddddd, roughness: 0.1, metalness: 0.1, transparent: true, opacity: 0.35 }), hx, HOOP.boardY, hz, undefined, 2);
+    glass.castShadow = false;
+
+    plane(1.0, 0.74, basic({ map: backboardTex, transparent: true, side: THREE.DoubleSide }), hx, HOOP.boardY, hz + 0.012);
+
+    for (const [w, h, x, y] of [[1.06, 0.03, 0, 0.385], [1.06, 0.03, 0, -0.385], [0.03, 0.8, -0.515, 0], [0.03, 0.8, 0.515, 0]]) {
+      box(w, h, 0.035, matSteel, hx + x, HOOP.boardY + y, hz);
+    }
+
+    // Rim: orange torus
+    const rim = add(new THREE.Mesh(new THREE.TorusGeometry(HOOP.R, HOOP.tube, 12, 48), std({ color: 0xff5a12, roughness: 0.4, metalness: 0.3 })));
+    rim.position.set(hx, HOOP.rimY, HOOP.rimZ);
+    rim.rotation.x = Math.PI / 2;
+
+    // Rim bracket
+    box(0.08, 0.05, 0.2, std({ color: 0xff5a12, roughness: 0.4 }), hx, HOOP.rimY, hz + 0.1);
+
+    // Net
+    const netPts = [];
+    const N = 16;
+    const tiers = [[HOOP.R, HOOP.rimY], [0.155, HOOP.rimY - 0.14], [0.12, HOOP.rimY - 0.27], [0.1, HOOP.rimY - 0.38]];
+    for (let t = 0; t < tiers.length - 1; t++) {
+      for (let i = 0; i < N; i++) {
+        const a = i / N * Math.PI * 2, a2 = (i + 0.5) / N * Math.PI * 2, a3 = (i + 1) / N * Math.PI * 2;
+        const P = (an, r, y) => V3(hx + Math.cos(an) * r, y, HOOP.rimZ + Math.sin(an) * r);
+        const [r0, y0] = tiers[t], [r1n, y1] = tiers[t + 1];
+        netPts.push(P(a, r0, y0), P(a2, r1n, y1), P(a2, r1n, y1), P(a3, r0, y0));
+      }
+    }
+    scene.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(netPts), new THREE.LineBasicMaterial({ color: 0xdddddd })));
+
+    /* ================= Basketball Object ================= */
+    const ball = {
+      mesh: sphere(0.12, std({ map: ballTex, roughness: 0.75 }), 0, -5, 0, undefined, 36, 28),
+      v: new THREE.Vector3(),
+      held: true,
+      live: false,
+      scored: false,
+      timer: 0,
+      prevY: 0,
+      score: 0,
+      shots: 0
+    };
+    ball.mesh.visible = true;
+
+    /* ================= Lighting ================= */
+    scene.add(new THREE.AmbientLight(0xdde4ec, 0.65));
+    scene.add(new THREE.HemisphereLight(0xcfe0f2, 0x8a6a44, 0.9));
+
+    const sun = new THREE.DirectionalLight(0xffeccd, 2.8);
+    sun.position.set(7.5, 9.5, 6.0);
+    sun.target.position.set(1.9, 2.0, -1.0);
+    scene.add(sun, sun.target);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(2048, 2048);
+    sun.shadow.camera.left = -6;
+    sun.shadow.camera.right = 6;
+    sun.shadow.camera.top = 6;
+    sun.shadow.camera.bottom = -6;
+    sun.shadow.camera.near = 1;
+    sun.shadow.camera.far = 25;
+    sun.shadow.bias = -0.0015;
+    sun.shadow.normalBias = 0.05;
+
+    const hoopSpot = new THREE.SpotLight(0xfff6ec, 8, 14, 0.65, 0.6, 1.4);
+    hoopSpot.position.set(2.4, 6.9, 1.2);
+    hoopSpot.target.position.set(1.9, 2.5, -0.95);
+    scene.add(hoopSpot, hoopSpot.target);
+    hoopSpot.castShadow = true;
+    hoopSpot.shadow.mapSize.set(1024, 1024);
+
+    const warmFill = new THREE.PointLight(0xffd7a8, 4, 12, 2);
+    warmFill.position.set(0, 3.5, 2.0);
+    scene.add(warmFill);
+
+    /* ================= Camera Position (Basketball View) ================= */
+    camera.position.set(HOOP.x + 0.05, 1.75, 3.0);
+    camera.lookAt(HOOP.x, HOOP.rimY - 0.25, HOOP.rimZ);
+
+    /* ================= Physics & Throwing Engine ================= */
+    const UP = new THREE.Vector3(0, 1, 0);
+    const fwd = new THREE.Vector3(), right = new THREE.Vector3(), upv = new THREE.Vector3();
+    const tmpA = new THREE.Vector3();
+
+    function heldPos(out) {
+      camera.getWorldDirection(fwd);
+      right.crossVectors(fwd, UP).normalize();
+      upv.crossVectors(right, fwd).normalize();
+      return out.copy(camera.position).addScaledVector(fwd, 0.95).addScaledVector(upv, -0.32).addScaledVector(right, 0.06);
+    }
+
+    function throwBall(dx, dyUp, ms) {
+      ball.held = false;
+      ball.live = true;
+      ball.scored = false;
+      ball.timer = 0;
+      ball.shots++;
+
+      const p = ball.mesh.position;
+      const target = V3(HOOP.x, HOOP.rimY + 0.05, HOOP.rimZ);
+      const horiz = V3(target.x - p.x, 0, target.z - p.z);
+      const dist = horiz.length();
+      horiz.normalize();
+
+      const T = 1.05;
+      const power = Math.min(1.12, Math.max(0.8, 0.86 + 0.14 * (dyUp / 150)));
+      const vh = dist / T * power;
+      const vy = ((target.y - p.y) + 0.5 * 9.8 * T * T) / T * (0.85 + 0.15 * power);
+
+      ball.v.copy(horiz).multiplyScalar(vh).addScaledVector(right, dx * 0.0022);
+      ball.v.y = vy;
+      ball.prevY = p.y;
+
+      hudMsg.textContent = '';
+      hudScore.textContent = `SCORE ${ball.score}  ·  SHOTS ${ball.shots}`;
+    }
+
+    function ballStep(dt) {
+      const p = ball.mesh.position, v = ball.v, r = 0.12;
+
+      if (ball.held) {
+        heldPos(tmpA);
+        p.lerp(tmpA, 0.35);
+        ball.mesh.rotation.y += dt * 0.5;
+        return;
+      }
+
+      ball.timer += dt;
+      v.y -= 9.8 * dt;
+      p.addScaledVector(v, dt);
+
+      ball.mesh.rotation.x -= v.z * dt * 4;
+      ball.mesh.rotation.z += v.x * dt * 4;
+
+      // Floor Collision
+      if (p.y < r) {
+        p.y = r;
+        if (Math.abs(v.y) > 0.4) v.y = -v.y * 0.58; else v.y = 0;
+        v.x *= 0.88;
+        v.z *= 0.88;
+      }
+
+      // Backboard Collision
+      if (v.z < 0 && p.z - r < HOOP.boardZ + 0.02 && p.z > HOOP.boardZ - 0.3 &&
+          Math.abs(p.x - HOOP.x) < HOOP.boardHalfW + r && Math.abs(p.y - HOOP.boardY) < HOOP.boardHalfH + r) {
+        p.z = HOOP.boardZ + 0.02 + r;
+        v.z = -v.z * 0.62;
+        v.x *= 0.85;
+      }
+
+      // Back Wall Collision
+      if (p.z < -3.3 + r) {
+        p.z = -3.3 + r;
+        v.z = -v.z * 0.5;
+      }
+
+      // Rim Collision (closest point on ring circle)
+      const dx = p.x - HOOP.x, dz = p.z - HOOP.rimZ;
+      const hd = Math.hypot(dx, dz) || 1e-6;
+      const qx = HOOP.x + dx / hd * HOOP.R, qz = HOOP.rimZ + dz / hd * HOOP.R;
+      const nx = p.x - qx, ny = p.y - HOOP.rimY, nz = p.z - qz;
+      const nd = Math.hypot(nx, ny, nz);
+      const minD = r + HOOP.tube;
+
+      if (nd < minD && nd > 1e-6) {
+        const k = (minD - nd);
+        p.x += nx / nd * k; p.y += ny / nd * k; p.z += nz / nd * k;
+        const vn = (v.x * nx + v.y * ny + v.z * nz) / nd;
+        if (vn < 0) {
+          v.x -= 1.5 * vn * nx / nd;
+          v.y -= 1.5 * vn * ny / nd;
+          v.z -= 1.5 * vn * nz / nd;
+          v.multiplyScalar(0.92);
+        }
+      }
+
+      // Basket Score Detection
+      if (!ball.scored && ball.prevY > HOOP.rimY && p.y <= HOOP.rimY && v.y < 0 && hd < HOOP.R - 0.03) {
+        ball.scored = true;
+        ball.score += 2;
+        hudScore.textContent = `SCORE ${ball.score}  ·  SHOTS ${ball.shots}`;
+        hudMsg.textContent = hd < 0.06 ? 'SWISH!' : 'BUCKET!';
+      }
+
+      ball.prevY = p.y;
+      const slow = p.y <= r + 0.001 && v.length() < 0.35;
+
+      // Reset Ball Condition
+      if (slow || ball.timer > 6 || p.z > camera.position.z + 1 || p.y < -1) {
+        ball.held = true;
+        ball.live = false;
+        if (!ball.scored) {
+          hudScore.textContent = `SCORE ${ball.score}  ·  SHOTS ${ball.shots}`;
+        }
+      }
+    }
+
+    function resetGame() {
+      ball.score = 0;
+      ball.shots = 0;
+      ball.held = true;
+      ball.live = false;
+      ball.scored = false;
+      hudMsg.textContent = '';
+      hudScore.textContent = `SCORE ${ball.score}  ·  SHOTS ${ball.shots}`;
+    }
+
+    /* ================= Input Handling ================= */
+    let dragStart = null;
+
+    canvas.addEventListener('pointerdown', (e) => {
+      if (ball.held) {
+        dragStart = { x: e.clientX, y: e.clientY, t: performance.now() };
+        canvas.classList.add('grabbing');
+      }
+    });
+
+    window.addEventListener('pointerup', (e) => {
+      if (dragStart && ball.held) {
+        const dx = e.clientX - dragStart.x;
+        const dy = e.clientY - dragStart.y;
+        canvas.classList.remove('grabbing');
+        if (-dy > 18) {
+          throwBall(dx, -dy, performance.now() - dragStart.t);
+        }
+        dragStart = null;
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === ' ' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (ball.held) throwBall(0, 150, 250);
+      }
+      if (e.key === 'r' || e.key === 'R' || e.key === 'Escape') {
+        resetGame();
+      }
+    });
+
+    btnShoot.addEventListener('click', () => {
+      if (ball.held) throwBall(0, 150, 250);
+    });
+
+    btnReset.addEventListener('click', resetGame);
+
+    /* ================= Sizing & Render Loop ================= */
+    function resize() {
+      const w = window.innerWidth, h = window.innerHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    let lastNow = performance.now();
+    function animate(now) {
+      requestAnimationFrame(animate);
+      const dt = Math.min(0.05, (now - lastNow) / 1000);
+      lastNow = now;
+
+      ballStep(dt);
+
+      renderer.render(scene, camera);
+    }
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>SUBLEVEL DEFENDER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;900&family=Geist+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #060204;
+    color: #ff4d00;
+    font-family: 'Geist Mono', monospace;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 12px;
+    overflow-x: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  .arcade-frame {
+    position: relative;
+    width: 100%;
+    max-width: 680px;
+    padding: clamp(10px, 2.5vw, 18px);
+    background: linear-gradient(180deg, #18090d 0%, #0d0407 100%);
+    border: 2px solid rgba(255, 77, 0, 0.4);
+    border-radius: 14px;
+    box-shadow: 0 0 60px rgba(255, 77, 0, 0.2), inset 0 1px 0 rgba(255, 120, 60, 0.25), inset 0 -2px 10px rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .canvas-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    aspect-ratio: 4 / 3;
+    background: #100402;
+    border: 1px solid rgba(255, 77, 0, 0.25);
+    border-radius: 6px;
+    box-shadow: 0 0 35px rgba(0, 0, 0, 0.95);
+    overflow: hidden;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+  .hud-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 12px;
+    padding: 0 4px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: #ffb090;
+    text-transform: uppercase;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .hud-title {
+    font-weight: 700;
+    color: #ff4d00;
+    text-shadow: 0 0 8px rgba(255, 77, 0, 0.5);
+  }
+  .controls-guide {
+    display: flex;
+    gap: 12px;
+    opacity: 0.85;
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    flex-wrap: wrap;
+  }
+
+  /* Touch Controls Bar (Mobile & Touch Friendly) */
+  .touch-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 14px;
+    gap: 12px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+  }
+  .d-pad {
+    display: flex;
+    gap: 10px;
+  }
+  .action-pad {
+    display: flex;
+    gap: 10px;
+  }
+  .t-btn {
+    font-family: 'Geist Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #ffd0b0;
+    background: linear-gradient(180deg, #2a0e08 0%, #170603 100%);
+    border: 1px solid rgba(255, 77, 0, 0.5);
+    border-radius: 8px;
+    padding: 12px 18px;
+    min-width: 58px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 120, 60, 0.3);
+    transition: transform 0.08s, background 0.08s, border-color 0.08s;
+    touch-action: none;
+  }
+  .t-btn:active, .t-btn.pressed {
+    transform: scale(0.92);
+    background: linear-gradient(180deg, #ff4d00 0%, #a82e00 100%);
+    color: #fff;
+    border-color: #ff9d70;
+    box-shadow: 0 0 16px rgba(255, 77, 0, 0.8);
+  }
+  .t-btn.fire {
+    background: linear-gradient(180deg, #3d1007 0%, #200702 100%);
+    border-color: #ff4d00;
+    color: #ff7030;
+    min-width: 80px;
+  }
+  .t-btn.start {
+    font-size: 11px;
+    padding: 12px 14px;
+    color: #ffb090;
+  }
+</style>
+</head>
+<body>
+
+<div class="arcade-frame">
+  <div class="canvas-wrapper">
+    <canvas id="gameCanvas" width="512" height="384"></canvas>
+  </div>
+
+  <div class="hud-bar">
+    <span class="hud-title">◆ SUBLEVEL DEFENDER ◆</span>
+    <div class="controls-guide">
+      <span>[←/→/A/D] MOVE</span>
+      <span>[SPACE/↑] FIRE</span>
+      <span>[ESC] LEAVE</span>
+    </div>
+  </div>
+
+  <!-- Mobile Touch Controls -->
+  <div class="touch-controls" id="touchControls">
+    <div class="d-pad">
+      <button type="button" class="t-btn" id="btnLeft" aria-label="Move Left">◄ LEFT</button>
+      <button type="button" class="t-btn" id="btnRight" aria-label="Move Right">RIGHT ►</button>
+    </div>
+    <div class="action-pad">
+      <button type="button" class="t-btn start" id="btnStart" aria-label="Start Game">► START</button>
+      <button type="button" class="t-btn fire" id="btnFire" aria-label="Fire Lasers">● FIRE</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const canvas = document.getElementById('gameCanvas');
+  const G = canvas.getContext('2d');
+  const GW = 512, GH = 384;
+
+  const game = {
+    on: false,
+    running: false,
+    over: false,
+    px: 256,
+    bullets: [],
+    enemies: [],
+    parts: [],
+    score: 0,
+    best: 0,
+    lives: 3,
+    spawnT: 0,
+    fireT: 0,
+    time: 0,
+    keys: { left: false, right: false, fire: false }
+  };
+
+  function gameStart() {
+    Object.assign(game, {
+      running: true,
+      over: false,
+      px: 256,
+      bullets: [],
+      enemies: [],
+      parts: [],
+      score: 0,
+      lives: 3,
+      spawnT: 0,
+      fireT: 0,
+      time: 0
+    });
+  }
+
+  function gameStep(dt) {
+    if (!game.running) return;
+    game.time += dt;
+    const sp = 300;
+    if (game.keys.left) game.px -= sp * dt;
+    if (game.keys.right) game.px += sp * dt;
+    game.px = Math.max(24, Math.min(GW - 24, game.px));
+    game.fireT -= dt;
+    if (game.keys.fire && game.fireT <= 0) {
+      game.bullets.push({ x: game.px, y: GH - 58 });
+      game.fireT = 0.22;
+    }
+    for (const b of game.bullets) b.y -= 480 * dt;
+    game.bullets = game.bullets.filter(b => b.y > -10);
+    game.spawnT -= dt;
+    if (game.spawnT <= 0) {
+      game.enemies.push({
+        x: 30 + Math.random() * (GW - 60),
+        y: -20,
+        s: 24 + Math.random() * 12,
+        v: 55 + Math.random() * 50 + game.score * 0.4,
+        w: (Math.random() - 0.5) * 60
+      });
+      game.spawnT = Math.max(0.35, 1.0 - game.score * 0.004);
+    }
+    for (const e of game.enemies) {
+      e.y += e.v * dt;
+      e.x += Math.sin(game.time * 2 + e.s) * e.w * dt;
+    }
+    for (const e of game.enemies) {
+      for (const b of game.bullets) {
+        if (!e.dead && !b.dead && Math.abs(e.x - b.x) < e.s / 2 + 3 && Math.abs(e.y - b.y) < e.s / 2 + 6) {
+          e.dead = b.dead = true;
+          game.score += 10;
+          for (let k = 0; k < 10; k++) {
+            game.parts.push({
+              x: e.x,
+              y: e.y,
+              vx: (Math.random() - 0.5) * 260,
+              vy: (Math.random() - 0.5) * 260,
+              l: 0.5
+            });
+          }
+        }
+      }
+    }
+    for (const e of game.enemies) {
+      if (!e.dead && e.y > GH - 40) {
+        e.dead = true;
+        game.lives--;
+        if (game.lives <= 0) {
+          game.running = false;
+          game.over = true;
+          game.best = Math.max(game.best, game.score);
+        }
+      }
+    }
+    game.enemies = game.enemies.filter(e => !e.dead);
+    game.bullets = game.bullets.filter(b => !b.dead);
+    for (const p of game.parts) {
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      p.l -= dt;
+    }
+    game.parts = game.parts.filter(p => p.l > 0);
+  }
+
+  function gameDraw(t) {
+    const g = G;
+    g.fillStyle = '#1a0805';
+    g.fillRect(0, 0, GW, GH);
+    g.strokeStyle = 'rgba(255,77,0,0.18)';
+    g.lineWidth = 1;
+    for (let x = 0; x <= GW; x += 32) {
+      g.beginPath();
+      g.moveTo(x, 0);
+      g.lineTo(x, GH);
+      g.stroke();
+    }
+    for (let y = (t * 40) % 32; y <= GH; y += 32) {
+      g.beginPath();
+      g.moveTo(0, y);
+      g.lineTo(GW, y);
+      g.stroke();
+    }
+    g.font = '700 16px "Geist Mono", monospace';
+    g.textBaseline = 'top';
+    g.textAlign = 'left';
+
+    if (!game.on) {
+      // attract mode
+      const cx = 256, cy = 180;
+      g.strokeStyle = '#ff4a10';
+      g.lineWidth = 3;
+      for (let i = 0; i < 7; i++) {
+        const k = ((t * 0.5 + i / 7) % 1);
+        const s = Math.pow(k, 2.2);
+        const rw = 20 + s * 520, rh = 14 + s * 380;
+        g.globalAlpha = 0.2 + s * 0.8;
+        g.strokeRect(cx - rw / 2, cy - rh / 2, rw, rh);
+      }
+      g.globalAlpha = 0.9;
+      g.beginPath();
+      for (const [dx, dy] of [[-1, -1], [1, -1], [-1, 1], [1, 1], [-1, 0], [1, 0], [0, -1], [0, 1]]) {
+        g.moveTo(cx, cy);
+        g.lineTo(cx + dx * 320, cy + dy * 240);
+      }
+      g.stroke();
+      g.globalAlpha = 1;
+      g.fillStyle = '#ff4d00';
+      g.textAlign = 'center';
+      g.font = '700 46px "Geist", Arial, sans-serif';
+      g.fillText('SUBLEVEL', cx, 118);
+      g.fillText('DEFENDER', cx, 166);
+      if (Math.floor(t * 2) % 2 === 0) {
+        g.font = '700 22px "Geist Mono", monospace';
+        g.fillStyle = '#ffb090';
+        g.fillText('INSERT COIN  ·  CLICK TO PLAY', cx, 300);
+      }
+      g.font = '700 14px "Geist Mono", monospace';
+      g.fillStyle = '#ff6a2a';
+      g.fillText('HI-SCORE ' + String(game.best).padStart(5, '0'), cx, 340);
+    } else {
+      g.fillStyle = '#ff6a2a';
+      g.fillText('SCORE ' + String(game.score).padStart(5, '0'), 16, 12);
+      g.textAlign = 'right';
+      g.fillText('LIVES ' + '♥'.repeat(Math.max(0, game.lives)), GW - 16, 12);
+      g.textAlign = 'left';
+
+      // player ship
+      const px = game.px, py = GH - 44;
+      g.fillStyle = '#ff4d00';
+      g.beginPath();
+      g.moveTo(px, py - 18);
+      g.lineTo(px + 18, py + 12);
+      g.lineTo(px, py + 4);
+      g.lineTo(px - 18, py + 12);
+      g.closePath();
+      g.fill();
+      g.fillStyle = '#ffd0b0';
+      g.fillRect(px - 3, py - 6, 6, 10);
+      g.fillStyle = '#ffb090';
+      for (const b of game.bullets) g.fillRect(b.x - 2, b.y - 8, 4, 12);
+      for (const e of game.enemies) {
+        g.fillStyle = '#ff4d00';
+        g.fillRect(e.x - e.s / 2, e.y - e.s / 2, e.s, e.s);
+        g.fillStyle = '#0c0302';
+        g.fillRect(e.x - e.s / 4, e.y - e.s / 6, e.s / 8, e.s / 5);
+        g.fillRect(e.x + e.s / 8, e.y - e.s / 6, e.s / 8, e.s / 5);
+      }
+      for (const p of game.parts) {
+        g.fillStyle = `rgba(255,120,60,${p.l * 2})`;
+        g.fillRect(p.x, p.y, 4, 4);
+      }
+      g.strokeStyle = 'rgba(255,77,0,0.5)';
+      g.beginPath();
+      g.moveTo(0, GH - 24);
+      g.lineTo(GW, GH - 24);
+      g.stroke();
+      g.textAlign = 'center';
+      if (!game.running && !game.over) {
+        g.font = '900 40px "Geist", Arial, sans-serif';
+        g.fillStyle = '#ff4d00';
+        g.fillText('SUBLEVEL DEFENDER', 256, 130);
+        g.font = '700 18px "Geist Mono", monospace';
+        g.fillStyle = '#ffb090';
+        if (Math.floor(t * 2) % 2 === 0) g.fillText('PRESS SPACE TO START', 256, 200);
+        g.font = '700 13px "Geist Mono", monospace';
+        g.fillStyle = '#ff6a2a';
+        g.fillText('← →  MOVE     SPACE  FIRE     ESC  LEAVE', 256, 240);
+      }
+      if (game.over) {
+        g.font = '900 44px "Geist", Arial, sans-serif';
+        g.fillStyle = '#ff4d00';
+        g.fillText('GAME OVER', 256, 130);
+        g.font = '700 18px "Geist Mono", monospace';
+        g.fillStyle = '#ffb090';
+        g.fillText('SCORE ' + game.score + '   BEST ' + game.best, 256, 190);
+        if (Math.floor(t * 2) % 2 === 0) g.fillText('SPACE TO RESTART', 256, 230);
+      }
+    }
+
+    // scanlines + vignette
+    g.fillStyle = 'rgba(0,0,0,0.22)';
+    for (let y = 0; y < GH; y += 4) g.fillRect(0, y, GW, 2);
+  }
+
+  function handleTriggerStart() {
+    if (!game.on) {
+      game.on = true;
+      game.running = false;
+      game.over = false;
+    } else if (!game.running) {
+      gameStart();
+    }
+  }
+
+  canvas.addEventListener('pointerdown', handleTriggerStart);
+
+  // Keyboard Controls
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      game.on = false;
+      game.running = false;
+      game.over = false;
+      return;
+    }
+    if (['ArrowLeft', 'a', 'A'].includes(e.key)) game.keys.left = true;
+    if (['ArrowRight', 'd', 'D'].includes(e.key)) game.keys.right = true;
+    if (e.key === ' ' || e.key === 'ArrowUp') {
+      game.keys.fire = true;
+      handleTriggerStart();
+    }
+    if ([' ', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) e.preventDefault();
+  });
+
+  window.addEventListener('keyup', (e) => {
+    if (['ArrowLeft', 'a', 'A'].includes(e.key)) game.keys.left = false;
+    if (['ArrowRight', 'd', 'D'].includes(e.key)) game.keys.right = false;
+    if (e.key === ' ' || e.key === 'ArrowUp') game.keys.fire = false;
+  });
+
+  // Touch Screen Button Bindings
+  const btnLeft = document.getElementById('btnLeft');
+  const btnRight = document.getElementById('btnRight');
+  const btnFire = document.getElementById('btnFire');
+  const btnStart = document.getElementById('btnStart');
+
+  function bindTouch(btn, onDown, onUp) {
+    if (!btn) return;
+    const press = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      btn.classList.add('pressed');
+      onDown();
+    };
+    const release = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      btn.classList.remove('pressed');
+      onUp();
+    };
+    btn.addEventListener('pointerdown', press);
+    btn.addEventListener('pointerup', release);
+    btn.addEventListener('pointercancel', release);
+    btn.addEventListener('pointerleave', release);
+    btn.addEventListener('touchstart', press, { passive: false });
+    btn.addEventListener('touchend', release, { passive: false });
+  }
+
+  bindTouch(btnLeft, () => { game.keys.left = true; }, () => { game.keys.left = false; });
+  bindTouch(btnRight, () => { game.keys.right = true; }, () => { game.keys.right = false; });
+  bindTouch(btnFire, () => {
+    game.keys.fire = true;
+    handleTriggerStart();
+  }, () => { game.keys.fire = false; });
+  bindTouch(btnStart, () => {
+    handleTriggerStart();
+    if (game.over) gameStart();
+  }, () => {});
+
+  let lastTime = performance.now();
+  function loop(now) {
+    const dt = Math.min(0.1, (now - lastTime) / 1000);
+    lastTime = now;
+    gameStep(dt);
+    gameDraw(now / 1000);
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
